@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import type { Photo } from '../data/photos'
 import './Lightbox.css'
 
@@ -30,7 +31,7 @@ export function Lightbox({ photos, index, onClose, onNavigate }: LightboxProps) 
 
   if (!photo) return null
 
-  return (
+  return createPortal(
     <div className="lightbox" role="dialog" aria-modal="true" aria-label={photo.title}>
       <button type="button" className="lightbox__backdrop" aria-label="Close" onClick={onClose} />
       <div className="lightbox__panel">
@@ -60,6 +61,7 @@ export function Lightbox({ photos, index, onClose, onNavigate }: LightboxProps) 
           </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   )
 }

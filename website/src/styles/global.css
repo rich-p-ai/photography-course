@@ -128,7 +128,8 @@ p {
 
 .page {
   padding: calc(var(--nav-h) + 2rem) var(--page-pad) 5rem;
-  animation: fade-up 0.7s var(--ease) both;
+  /* No animation-fill-mode: transform fill creates a containing block that breaks position:fixed */
+  animation: fade-up 0.7s var(--ease);
 }
 
 .page-narrow {
