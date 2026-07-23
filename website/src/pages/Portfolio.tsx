@@ -2,12 +2,12 @@ import { PhotoGrid } from '../components/PhotoGrid'
 
 export function Portfolio() {
   return (
-    <section className="page">
+    <section className="page portfolio-page">
       <p className="section-label">Portfolio</p>
       <h1 className="page-title">Selected frames</h1>
-      <p className="page-lede" style={{ marginBottom: '2.5rem' }}>
-        Filter by Street, Landscape, or Portraits — or open Series for curated
-        sets. Frames can appear in both a type and a series.
+      <p className="page-lede portfolio-page__lede">
+        Quiet observational work — street, shore, and color held still. Filter by
+        type, or open Series for the longer sequences.
       </p>
       <PhotoGrid />
     </section>

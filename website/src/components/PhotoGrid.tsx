@@ -22,6 +22,11 @@ type PhotoGridProps = {
   groupBySet?: boolean
   /** overlay = portfolio hover captions; below = series page under-image captions */
   captionMode?: 'overlay' | 'below'
+  /**
+   * editorial = alternating left/right flow (portfolio default)
+   * masonry = compact multi-column (home / limited grids)
+   */
+  layout?: 'editorial' | 'masonry'
 }
 
 export function PhotoGrid({
@@ -31,6 +36,7 @@ export function PhotoGrid({
   day,
   groupBySet,
   captionMode = 'overlay',
+  layout: layoutProp,
 }: PhotoGridProps) {
   const [searchParams, setSearchParams] = useSearchParams()
   const tabParam = searchParams.get('tab')
@@ -51,6 +57,10 @@ export function PhotoGrid({
 
   const shouldGroup =
     groupBySet ?? (typeof limit !== 'number' && captionMode === 'overlay')
+
+  const layout =
+    layoutProp ??
+    (captionMode === 'below' || typeof limit === 'number' ? 'masonry' : 'editorial')
 
   const filtered = useMemo(() => {
     const base =
@@ -79,9 +89,10 @@ export function PhotoGrid({
   }
 
   let runningIndex = 0
+  const isEditorial = layout === 'editorial' && captionMode === 'overlay'
 
   return (
-    <div className="photo-grid-wrap">
+    <div className={`photo-grid-wrap ${isEditorial ? 'photo-grid-wrap--editorial' : ''}`}>
       {showFilters && (
         <div className="filters" role="tablist" aria-label="Filter portfolio">
           {portfolioTabs.map((tab) => (
@@ -102,13 +113,13 @@ export function PhotoGrid({
       {filter === 'Series' && showFilters ? (
         <SeriesCards />
       ) : sets ? (
-        <div className="photo-sets">
-          {sets.map((group) => {
+        <div className={isEditorial ? 'photo-sets photo-sets--editorial' : 'photo-sets'}>
+          {sets.map((group, setIndex) => {
             const series = seriesByTitle(group.set)
             return (
               <section
                 key={group.set}
-                className="photo-set"
+                className={`photo-set ${isEditorial ? `photo-set--${setIndex % 2 === 0 ? 'lead-left' : 'lead-right'}` : ''}`}
                 aria-labelledby={`set-${slug(group.set)}`}
               >
                 <header className="photo-set__header">
@@ -130,7 +141,11 @@ export function PhotoGrid({
                     {group.photos.length === 1 ? 'frame' : 'frames'}
                   </p>
                 </header>
-                <div className="photo-grid">
+                <div
+                  className={
+                    isEditorial ? 'photo-flow' : 'photo-grid'
+                  }
+                >
                   {group.photos.map((photo) => {
                     const index = runningIndex++
                     return (
@@ -139,6 +154,7 @@ export function PhotoGrid({
                         photo={photo}
                         index={index}
                         captionMode={captionMode}
+                        layout={isEditorial ? 'editorial' : 'masonry'}
                         onOpen={setActiveIndex}
                       />
                     )
@@ -151,7 +167,11 @@ export function PhotoGrid({
       ) : (
         <div
           className={
-            captionMode === 'below' ? 'photo-grid photo-grid--below' : 'photo-grid'
+            captionMode === 'below'
+              ? 'photo-grid photo-grid--below'
+              : isEditorial
+                ? 'photo-flow'
+                : 'photo-grid'
           }
         >
           {filtered.map((photo, index) => (
@@ -160,6 +180,7 @@ export function PhotoGrid({
               photo={photo}
               index={index}
               captionMode={captionMode}
+              layout={isEditorial ? 'editorial' : 'masonry'}
               onOpen={setActiveIndex}
             />
           ))}
@@ -182,11 +203,13 @@ function PhotoCard({
   photo,
   index,
   captionMode,
+  layout,
   onOpen,
 }: {
   photo: Photo
   index: number
   captionMode: 'overlay' | 'below'
+  layout: 'editorial' | 'masonry'
   onOpen: (index: number) => void
 }) {
   if (captionMode === 'below') {
@@ -213,6 +236,38 @@ function PhotoCard({
           <span className="photo-grid__below-caption">{photo.caption}</span>
         </figcaption>
       </figure>
+    )
+  }
+
+  if (layout === 'editorial') {
+    const side = index % 2 === 0 ? 'left' : 'right'
+    const orientation = photo.width >= photo.height ? 'landscape' : 'portrait'
+    return (
+      <div
+        className={`photo-flow__row photo-flow__row--${side}`}
+        style={{ animationDelay: `${Math.min(index, 12) * 45}ms` }}
+      >
+        <button
+          type="button"
+          className={`photo-grid__item photo-flow__frame photo-flow__frame--${orientation}`}
+          onClick={() => onOpen(index)}
+        >
+          <img
+            src={photo.src}
+            alt={photo.title}
+            loading="lazy"
+            width={photo.width}
+            height={photo.height}
+          />
+          <span className="photo-grid__caption">
+            <span className="photo-grid__title">{photo.title}</span>
+            <span className="photo-grid__meta">
+              {photo.category}
+              {photo.day ? ` · Day ${String(photo.day).padStart(2, '0')}` : ''}
+            </span>
+          </span>
+        </button>
+      </div>
     )
   }
 
