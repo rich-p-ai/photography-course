@@ -3,6 +3,32 @@
   gap: 1.75rem;
 }
 
+.photo-sets {
+  display: grid;
+  gap: 3.25rem;
+}
+
+.photo-set__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.1rem;
+  padding-bottom: 0.65rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.photo-set__header .section-label {
+  margin-bottom: 0;
+}
+
+.photo-set__count {
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
 .filters {
   display: flex;
   flex-wrap: wrap;
