@@ -2,10 +2,10 @@ import { Link, Navigate, useParams } from 'react-router-dom'
 import {
   adjacentSeries,
   getSeries,
-  photosForSeries,
+  resolveSeriesFrames,
   seriesList,
 } from '../data/series'
-import { PhotoGrid } from '../components/PhotoGrid'
+import { SeriesEssay } from '../components/SeriesEssay'
 import './SeriesPage.css'
 
 export function SeriesPage() {
@@ -16,7 +16,7 @@ export function SeriesPage() {
     return <Navigate to="/portfolio" replace />
   }
 
-  const frames = photosForSeries(series)
+  const frames = resolveSeriesFrames(series)
   const { prev, next } = adjacentSeries(series.slug)
 
   return (
@@ -31,22 +31,15 @@ export function SeriesPage() {
         </Link>
       </nav>
 
-      <header className="series-page__header">
-        <h1 className="series-page__title">{series.title}</h1>
-        <p className="series-page__desc">{series.description}</p>
-      </header>
-
-      <PhotoGrid
-        photos={frames}
-        showFilters={false}
-        groupBySet={false}
-        captionMode="below"
-      />
+      <SeriesEssay series={series} frames={frames} />
 
       <nav className="series-page__pager" aria-label="Other series">
         <div className="series-page__pager-side">
           {prev ? (
-            <Link to={`/portfolio/series/${prev.slug}`} className="series-page__pager-link">
+            <Link
+              to={`/portfolio/series/${prev.slug}`}
+              className="series-page__pager-link"
+            >
               <span className="series-page__pager-label">Previous</span>
               <span className="series-page__pager-title">{prev.title}</span>
             </Link>
@@ -54,7 +47,7 @@ export function SeriesPage() {
             <span />
           )}
         </div>
-        <div className="series-page__pager-index" aria-hidden="true">
+        <div className="series-page__pager-index">
           {seriesList.map((item) => (
             <Link
               key={item.slug}
@@ -67,7 +60,10 @@ export function SeriesPage() {
         </div>
         <div className="series-page__pager-side series-page__pager-side--end">
           {next ? (
-            <Link to={`/portfolio/series/${next.slug}`} className="series-page__pager-link">
+            <Link
+              to={`/portfolio/series/${next.slug}`}
+              className="series-page__pager-link"
+            >
               <span className="series-page__pager-label">Next</span>
               <span className="series-page__pager-title">{next.title}</span>
             </Link>
