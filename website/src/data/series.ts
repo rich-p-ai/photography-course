@@ -37,7 +37,7 @@ export const seriesList: Series[] = [
       'At low light the beach stops being a place you walk and becomes a plane you look into. Isle of Palms after the sun drops — wet sand, heavy cloud, almost no color left except what the horizon still owes the sky. I went out for reflections. I stayed for how small a person becomes when the shore holds a second sky.',
     journeyTitle: 'The journey',
     journey:
-      'Shot handheld on the ZV-E10 II with the 24-50mm, working the waterline while the tide was still glass. The constraint was simple: stay low, keep the horizon honest, and let figures enter only when the frame needed scale. Early frames were empty mirrors. Later ones let people cut the reflection — proof that the quiet was a stage, not a void. Editing stayed cool in the shadows and warm only where the break in the cloud earned it.',
+      'Tripod work on the ZV-E10 II with the SIRUI 20mm T1.8 1.33× anamorphic — wide enough to hold shore and sky as one plane, squeezed just enough to stretch the horizon without turning it into spectacle. The constraint was simple: stay low, keep the horizon honest, and let figures enter only when the frame needed scale. Early frames were empty mirrors. Later ones let people cut the reflection — proof that the quiet was a stage, not a void. Editing stayed cool in the shadows and warm only where the break in the cloud earned it.',
     closing:
       'What resolved was not a single hero frame, but a sequence: shore as mirror, then mirror interrupted. The walkers do not break the mood — they confirm it. Without them the beach is weather. With them it is a place someone chose to be at that hour.',
     frames: [
@@ -79,10 +79,10 @@ export const seriesList: Series[] = [
     description: 'Close studies of flame and ember light by the fire pit.',
     coverId: 'fireside-1',
     opening:
-      'I wanted fire without campfire cliché — no faces, no marshmallows, no wide patio context. Just flame as structure: heat, edge, and black. Shot at Isle of Palms after the social part of the evening was over, when the pit was still working and nobody needed the camera pointed at them.',
+      'I wanted fire without campfire cliché — no faces, no marshmallows, no wide patio context. Just flame as structure: heat, edge, and black. Shot in our backyard after the social part of the evening was over, when the pit was still working and nobody needed the camera pointed at them.',
     journeyTitle: 'Why this series',
     journey:
-      'The 24-50mm stayed close. Wide enough to keep shape, tight enough to lose the yard. Exposure chased highlight detail in the brightest tongues and accepted deep black everywhere else — no lifting shadows to “save” information that was never the point. Four frames, one sit. The work is about how the same fire changes breath between clicks, not about variety of location.',
+      'The SIRUI Sniper 56mm f/1.2 stayed close — tight enough to lose the yard, open enough to keep the flame dimensional. Exposure chased highlight detail in the brightest tongues and accepted deep black everywhere else — no lifting shadows to “save” information that was never the point. Four frames, one sit. The work is about how the same fire changes breath between clicks, not about variety of location.',
     closing:
       'By the last frame the flame is quieter — less performance, more ember. That was the discovery: fire does not need a wide story. Held close, it is already a complete subject. The series ends when the light stops arguing and starts settling.',
     frames: [
