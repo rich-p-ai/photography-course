@@ -190,17 +190,6 @@ export const photos: Photo[] = [
     height: 1124,
   },
   {
-    id: 'thank-me-home',
-    title: 'Thank Me Home',
-    caption: 'Personal documentary — a still moment between everything else.',
-    location: 'Home',
-    date: '2026-06-28',
-    category: 'Portraits',
-    src: photoSrc('thank-me-home.jpg'),
-    width: 1125,
-    height: 2000,
-  },
-  {
     id: 'fireside-1',
     title: 'Fireside I',
     caption: 'Flame as subject — close, quiet, high contrast.',
