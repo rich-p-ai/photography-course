@@ -1,0 +1,120 @@
+.course-day {
+  max-width: 44rem;
+}
+
+.course-day__crumb {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+}
+
+.course-day__crumb a:hover {
+  color: var(--accent);
+}
+
+.course-day__facts {
+  display: grid;
+  gap: 1.1rem;
+  margin: 1.75rem 0 2.25rem;
+  padding: 1.35rem 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.course-day__facts dt {
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.3rem;
+}
+
+.course-day__facts dd {
+  margin: 0;
+  font-size: 1.02rem;
+  color: var(--text);
+}
+
+.course-day__block {
+  margin-bottom: 2rem;
+}
+
+.course-day__block h2 {
+  font-size: 1.15rem;
+  margin-bottom: 0.75rem;
+}
+
+.course-day__block ul,
+.course-day__block ol {
+  margin: 0;
+  padding-left: 1.2rem;
+  color: var(--text-muted);
+  display: grid;
+  gap: 0.45rem;
+}
+
+.course-day__special {
+  padding: 1rem 0;
+  border-top: 1px solid var(--border);
+}
+
+.course-day__jump {
+  margin: 0 0 0.5rem;
+}
+
+.course-day__jump a {
+  color: var(--accent);
+  font-size: 0.95rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+}
+
+.course-day__pager {
+  display: grid;
+  gap: 1.25rem;
+  margin-top: 3rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--border);
+}
+
+@media (min-width: 640px) {
+  .course-day__pager {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.course-day__pager-link {
+  display: grid;
+  gap: 0.3rem;
+  color: var(--text-muted);
+  transition: color 0.2s var(--ease);
+}
+
+.course-day__pager-link:hover {
+  color: var(--accent);
+}
+
+.course-day__pager-link span {
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.course-day__pager-link strong {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.course-day__pager-link:hover strong {
+  color: var(--accent);
+}
+
+.course-day__pager-link--next {
+  text-align: right;
+}
