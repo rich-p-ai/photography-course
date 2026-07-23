@@ -42,5 +42,12 @@ Mid-course (Day 7) and final (Day 14) style audit.
 ## Best Of
 Will be curated into a gallery page at the end.
 
+## Portfolio website
+Public portfolio lives in [`website/`](website/) — Vite + React site with filters, lightbox, and light/blue-hour theme.
+
+**Live:** https://rich-p-ai.github.io/photography-course/
+
+Deploy: push to `main` (GitHub Actions → Pages). Photo data: `website/src/data/photos.ts`.
+
 ---
 Push photos to the Day folders. I review every upload.
