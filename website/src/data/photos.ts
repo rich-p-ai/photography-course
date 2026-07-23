@@ -1,4 +1,7 @@
-export type PhotoCategory = 'Street' | 'Landscape' | 'Portraits' | 'Series'
+export type PhotoCategory = 'Street' | 'Landscape' | 'Portraits'
+
+/** Portfolio filter tabs — Series opens the series card index */
+export type PortfolioTab = PhotoCategory | 'All' | 'Series'
 
 /** Respect Vite/GitHub Pages base path (e.g. /photography-course/) */
 export function photoSrc(file: string): string {
@@ -24,8 +27,9 @@ export type Photo = {
 export const photoSetOrder = [
   'Marsh Light',
   'Old San Juan',
+  'Colores de San Juan',
   'Mirror Shore',
-  'IOP Evening',
+  'IOP Morning',
   'Fireside',
   'Launch Night',
   'Along the Road',
@@ -174,15 +178,87 @@ export const photos: Photo[] = [
     height: 1124,
   },
 
-  // — Mirror Shore (Day 01 beach) —
+  // — Colores de San Juan —
+  {
+    id: '275-blue-wall',
+    title: '275 Blue Wall',
+    caption: 'Blue wall, black roll shutter, orange barred door.',
+    location: 'Old San Juan, PR',
+    date: '2026-06-23',
+    set: 'Colores de San Juan',
+    category: 'Street',
+    src: photoSrc('275-blue-wall.jpg'),
+    width: 2000,
+    height: 1125,
+  },
+  {
+    id: 'cobble-blue',
+    title: 'Cobble Blue',
+    caption: 'Blue facade with repeating red doors on cobblestone.',
+    location: 'Old San Juan, PR',
+    date: '2026-06-23',
+    set: 'Colores de San Juan',
+    category: 'Street',
+    src: photoSrc('cobble-blue.jpg'),
+    width: 2000,
+    height: 1125,
+  },
+  {
+    id: 'balcony-row',
+    title: 'Balcony Row',
+    caption: 'Terracotta and pink buildings with stacked balconies.',
+    location: 'Old San Juan, PR',
+    date: '2026-06-23',
+    set: 'Colores de San Juan',
+    category: 'Street',
+    src: photoSrc('balcony-row.jpg'),
+    width: 1125,
+    height: 2000,
+  },
+  {
+    id: 'teal-285',
+    title: 'Teal 285',
+    caption: 'Teal building with wooden arched doors and balconies.',
+    location: 'Old San Juan, PR',
+    date: '2026-06-23',
+    set: 'Colores de San Juan',
+    category: 'Street',
+    src: photoSrc('teal-285.jpg'),
+    width: 1125,
+    height: 2000,
+  },
+  {
+    id: 'callejon-green',
+    title: 'Callejón Green',
+    caption: 'Lime green and orange walls with ocean beyond.',
+    location: 'Old San Juan, PR',
+    date: '2026-06-23',
+    set: 'Colores de San Juan',
+    category: 'Street',
+    src: photoSrc('callejon-green.jpg'),
+    width: 2000,
+    height: 1125,
+  },
+  {
+    id: 'biskane-305',
+    title: 'Biskane 305',
+    caption: 'Torn pink poster on peeling yellow wall.',
+    location: 'Old San Juan, PR',
+    date: '2026-06-23',
+    set: 'Colores de San Juan',
+    category: 'Street',
+    src: photoSrc('biskane-305.jpg'),
+    width: 1125,
+    height: 2000,
+  },
+
+  // — Mirror Shore —
   {
     id: 'mirror-tide',
     title: 'Mirror Tide',
-    caption:
-      'Wet sand as a second sky — dark clouds and a thin seam of gold at the horizon.',
+    caption: 'Wet sand reflecting dark clouds and horizon light.',
     location: 'Isle of Palms, SC',
     date: '2026-07-23',
-    day: 1,
     set: 'Mirror Shore',
     category: 'Landscape',
     src: photoSrc('mirror-tide.jpg'),
@@ -192,11 +268,9 @@ export const photos: Photo[] = [
   {
     id: 'cloud-walk',
     title: 'Cloud Walk',
-    caption:
-      'Two silhouettes on the shoreline — leading line of foam into storm-lit sky.',
+    caption: 'Two walkers on shoreline under heavy cloud.',
     location: 'Isle of Palms, SC',
     date: '2026-07-23',
-    day: 1,
     set: 'Mirror Shore',
     category: 'Landscape',
     src: photoSrc('cloud-walk.jpg'),
@@ -206,11 +280,9 @@ export const photos: Photo[] = [
   {
     id: 'flowing-shore',
     title: 'Flowing Shore',
-    caption:
-      'Long-exposure water softens the right edge — the beach holds the reflection still.',
+    caption: 'Soft incoming tide against reflective wet sand.',
     location: 'Isle of Palms, SC',
     date: '2026-07-23',
-    day: 1,
     set: 'Mirror Shore',
     category: 'Landscape',
     src: photoSrc('flowing-shore.jpg'),
@@ -220,11 +292,9 @@ export const photos: Photo[] = [
   {
     id: 'reflection',
     title: 'Reflection',
-    caption:
-      'Mirror-flat tide and heavy cloud — the frame balances sky against its copy.',
+    caption: 'Flat tide mirroring a broken cloud sky.',
     location: 'Isle of Palms, SC',
     date: '2026-07-23',
-    day: 1,
     set: 'Mirror Shore',
     category: 'Landscape',
     src: photoSrc('reflection.jpg'),
@@ -234,11 +304,9 @@ export const photos: Photo[] = [
   {
     id: 'shoreline-pair',
     title: 'Shoreline Pair',
-    caption:
-      'Walkers small against the cloud wall — scale and leading line along the wet sand.',
+    caption: 'Two figures walking the wet sand line.',
     location: 'Isle of Palms, SC',
     date: '2026-07-23',
-    day: 1,
     set: 'Mirror Shore',
     category: 'Landscape',
     src: photoSrc('shoreline-pair.jpg'),
@@ -248,11 +316,9 @@ export const photos: Photo[] = [
   {
     id: 'beach-companions',
     title: 'Beach Companions',
-    caption:
-      'A pair at the waterline under broken light — cool shadow, warm break in the sky.',
+    caption: 'Pair at the waterline under broken light.',
     location: 'Isle of Palms, SC',
     date: '2026-07-23',
-    day: 1,
     set: 'Mirror Shore',
     category: 'Landscape',
     src: photoSrc('beach-companions.jpg'),
@@ -260,7 +326,7 @@ export const photos: Photo[] = [
     height: 513,
   },
 
-  // — IOP Evening (Day 01 street) —
+  // — IOP Morning (Day 01 street) —
   {
     id: 'waiting',
     title: 'Waiting',
@@ -269,7 +335,7 @@ export const photos: Photo[] = [
     location: 'Isle of Palms, SC',
     date: '2026-07-23',
     day: 1,
-    set: 'IOP Evening',
+    set: 'IOP Morning',
     category: 'Street',
     src: photoSrc('waiting.jpg'),
     width: 576,
@@ -283,7 +349,7 @@ export const photos: Photo[] = [
     location: 'Isle of Palms, SC',
     date: '2026-07-23',
     day: 1,
-    set: 'IOP Evening',
+    set: 'IOP Morning',
     category: 'Street',
     src: photoSrc('evening-arrangement.jpg'),
     width: 1024,
@@ -297,7 +363,7 @@ export const photos: Photo[] = [
     location: 'Isle of Palms, SC',
     date: '2026-07-23',
     day: 1,
-    set: 'IOP Evening',
+    set: 'IOP Morning',
     category: 'Street',
     src: photoSrc('iop-street-light.jpg'),
     width: 576,
@@ -311,7 +377,7 @@ export const photos: Photo[] = [
     location: 'Isle of Palms, SC',
     date: '2026-07-23',
     day: 1,
-    set: 'IOP Evening',
+    set: 'IOP Morning',
     category: 'Street',
     src: photoSrc('delivery-hour.jpg'),
     width: 1024,
@@ -325,7 +391,7 @@ export const photos: Photo[] = [
     location: 'Isle of Palms, SC',
     date: '2026-07-23',
     day: 1,
-    set: 'IOP Evening',
+    set: 'IOP Morning',
     category: 'Street',
     src: photoSrc('parking-kiosk.jpg'),
     width: 1024,
@@ -339,7 +405,7 @@ export const photos: Photo[] = [
     location: 'Isle of Palms, SC',
     date: '2026-07-23',
     day: 1,
-    set: 'IOP Evening',
+    set: 'IOP Morning',
     category: 'Street',
     src: photoSrc('suspended-calm.jpg'),
     width: 1024,
@@ -350,11 +416,11 @@ export const photos: Photo[] = [
   {
     id: 'fireside-1',
     title: 'Fireside I',
-    caption: 'Flame as subject — close, quiet, high contrast.',
-    location: 'Isle of Palms area',
+    caption: 'Close flame against black. Isle of Palms.',
+    location: 'Isle of Palms, SC',
     date: '2026-07-15',
     set: 'Fireside',
-    category: 'Series',
+    category: 'Landscape',
     src: photoSrc('fireside-1.jpg'),
     width: 1333,
     height: 2000,
@@ -362,11 +428,11 @@ export const photos: Photo[] = [
   {
     id: 'fireside-2',
     title: 'Fireside II',
-    caption: 'Same fire, different breath of the flame.',
-    location: 'Isle of Palms area',
+    caption: 'Rising flame detail, high contrast.',
+    location: 'Isle of Palms, SC',
     date: '2026-07-15',
     set: 'Fireside',
-    category: 'Series',
+    category: 'Landscape',
     src: photoSrc('fireside-2.jpg'),
     width: 1333,
     height: 2000,
@@ -374,11 +440,11 @@ export const photos: Photo[] = [
   {
     id: 'fireside-3',
     title: 'Fireside III',
-    caption: 'Warm geometry against black — slowing down by the pit.',
-    location: 'Isle of Palms area',
+    caption: 'Wide flame geometry against darkness.',
+    location: 'Isle of Palms, SC',
     date: '2026-07-15',
     set: 'Fireside',
-    category: 'Series',
+    category: 'Landscape',
     src: photoSrc('fireside-3.jpg'),
     width: 2000,
     height: 1333,
@@ -386,11 +452,11 @@ export const photos: Photo[] = [
   {
     id: 'fireside-4',
     title: 'Fireside IV',
-    caption: 'Last of the series — ember light, nothing else needed.',
-    location: 'Isle of Palms area',
+    caption: 'Ember light and last of the flame.',
+    location: 'Isle of Palms, SC',
     date: '2026-07-15',
     set: 'Fireside',
-    category: 'Series',
+    category: 'Landscape',
     src: photoSrc('fireside-4.jpg'),
     width: 2000,
     height: 1333,
@@ -477,12 +543,15 @@ export function groupPhotosBySet(list: Photo[]): Array<{ set: string; photos: Ph
 export const heroPhoto =
   photos.find((p) => p.id === 'over-the-marsh') ?? photos[0]
 
-export const categories: Array<PhotoCategory | 'All'> = [
+export const portfolioTabs: PortfolioTab[] = [
   'All',
   'Street',
   'Landscape',
   'Portraits',
   'Series',
 ]
+
+/** @deprecated use portfolioTabs */
+export const categories = portfolioTabs
 
 export const adobePortfolioUrl = 'https://adobe.ly/3TPWgFK'
