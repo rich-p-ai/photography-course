@@ -1,4 +1,5 @@
 import { Link, Navigate, useParams } from 'react-router-dom'
+import { Checklist } from '../components/Checklist'
 import { StudyMaterialItem } from '../components/StudyMaterialItem'
 import { UploadForReview } from '../components/UploadForReview'
 import {
@@ -32,6 +33,7 @@ export function CourseDay() {
         Day {String(day.day).padStart(2, '0')} · {formatCourseDate(day.day)}
       </p>
       <h1 className="page-title">{day.title}</h1>
+      {day.goal && <p className="course-day__goal">{day.goal}</p>}
 
       <dl className="course-day__facts">
         {day.genre && (
@@ -67,6 +69,13 @@ export function CourseDay() {
         </section>
       )}
 
+      {day.fieldChecklist.length > 0 && (
+        <section className="course-day__block">
+          <h2>Field checklist</h2>
+          <Checklist storageKey={`${day.slug}-field`} items={day.fieldChecklist} />
+        </section>
+      )}
+
       {day.shootingBrief.length > 0 && (
         <section className="course-day__block">
           <h2>Shooting brief</h2>
@@ -75,6 +84,46 @@ export function CourseDay() {
               <li key={item}>{item}</li>
             ))}
           </ol>
+        </section>
+      )}
+
+      {day.editingWorkflow.length > 0 && (
+        <section className="course-day__block">
+          <h2>Editing workflow (Lightroom)</h2>
+          <Checklist
+            storageKey={`${day.slug}-edit`}
+            items={day.editingWorkflow}
+            ordered
+          />
+        </section>
+      )}
+
+      {day.presetLab.length > 0 && (
+        <section className="course-day__block">
+          <h2>Preset lab</h2>
+          <ul>
+            {day.presetLab.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {day.uploadChecklist.length > 0 && (
+        <section className="course-day__block">
+          <h2>Upload checklist</h2>
+          <Checklist storageKey={`${day.slug}-upload`} items={day.uploadChecklist} />
+        </section>
+      )}
+
+      {day.reflectionPrompts.length > 0 && (
+        <section className="course-day__block">
+          <h2>Reflection prompts (reflection.md)</h2>
+          <ul>
+            {day.reflectionPrompts.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
         </section>
       )}
 

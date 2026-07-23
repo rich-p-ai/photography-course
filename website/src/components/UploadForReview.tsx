@@ -299,7 +299,7 @@ export function UploadForReview({ day }: UploadForReviewProps) {
       </details>
 
       <ul className="upload-review__notes">
-        {day.uploadNotes.map((note) => (
+        {day.uploadChecklist.map((note) => (
           <li key={note}>{note}</li>
         ))}
       </ul>

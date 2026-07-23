@@ -16,6 +16,14 @@
   color: var(--accent);
 }
 
+.course-day__goal {
+  margin: 1rem 0 0;
+  font-size: 1.08rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+  max-width: 40rem;
+}
+
 .course-day__facts {
   display: grid;
   gap: 1.1rem;

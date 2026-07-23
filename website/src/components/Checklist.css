@@ -1,0 +1,39 @@
+.checklist {
+  list-style: none;
+  margin: 0;
+  padding: 0 !important;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.checklist li {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.checklist__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: color 0.15s var(--ease);
+}
+
+.checklist__item:hover {
+  color: var(--text);
+}
+
+.checklist__item input[type='checkbox'] {
+  margin-top: 0.3rem;
+  flex-shrink: 0;
+  width: 0.95rem;
+  height: 0.95rem;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.checklist__item--done span {
+  text-decoration: line-through;
+  opacity: 0.55;
+}
