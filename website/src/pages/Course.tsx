@@ -34,8 +34,8 @@ export function Course() {
 
       <ol className="course__list">
         {courseDays.map((day) => (
-          <li key={day.slug}>
-            <Link to={`/course/${day.slug}`} className="course__row">
+          <li key={day.slug} className="course__row">
+            <Link to={`/course/${day.slug}`} className="course__main">
               <span className="course__day">
                 Day {String(day.day).padStart(2, '0')}
               </span>
@@ -45,8 +45,18 @@ export function Course() {
                   {day.genre || 'Open'} · {formatCourseDate(day.day)}
                 </span>
               </span>
-              <span className="course__cta">Open</span>
             </Link>
+            <div className="course__actions">
+              <Link
+                to={`/course/${day.slug}#upload-for-review`}
+                className="course__upload"
+              >
+                Upload
+              </Link>
+              <Link to={`/course/${day.slug}`} className="course__cta">
+                Open
+              </Link>
+            </div>
           </li>
         ))}
       </ol>

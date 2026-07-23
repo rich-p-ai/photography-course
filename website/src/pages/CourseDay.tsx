@@ -1,5 +1,7 @@
-import { Link, Navigate, useParams } from 'react-router-dom'
+import { useEffect } from 'react'
+import { Link, Navigate, useLocation, useParams } from 'react-router-dom'
 import { Checklist } from '../components/Checklist'
+import { PhotoGrid } from '../components/PhotoGrid'
 import { StudyMaterialItem } from '../components/StudyMaterialItem'
 import { UploadForReview } from '../components/UploadForReview'
 import {
@@ -7,11 +9,22 @@ import {
   formatCourseDate,
   getCourseDay,
 } from '../data/course'
+import { photosForDay } from '../data/photos'
 import './CourseDay.css'
 
 export function CourseDay() {
   const { daySlug } = useParams()
+  const { hash } = useLocation()
   const day = daySlug ? getCourseDay(daySlug) : undefined
+
+  useEffect(() => {
+    if (!hash) return
+    const id = hash.replace(/^#/, '')
+    const el = document.getElementById(id)
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }, [hash, daySlug])
 
   if (!day) {
     return <Navigate to="/course" replace />
@@ -20,6 +33,7 @@ export function CourseDay() {
   const index = courseDays.findIndex((d) => d.slug === day.slug)
   const prev = index > 0 ? courseDays[index - 1] : null
   const next = index < courseDays.length - 1 ? courseDays[index + 1] : null
+  const dayPhotos = photosForDay(day.day)
 
   return (
     <section className="page course-day">
@@ -55,6 +69,12 @@ export function CourseDay() {
           </div>
         )}
       </dl>
+
+      <p className="course-day__upload-cta">
+        <a href="#upload-for-review" className="btn btn-primary">
+          Upload notes &amp; photos
+        </a>
+      </p>
 
       {day.studyMaterial.length > 0 && (
         <section className="course-day__block">
@@ -135,6 +155,13 @@ export function CourseDay() {
               <li key={item}>{item}</li>
             ))}
           </ul>
+        </section>
+      )}
+
+      {dayPhotos.length > 0 && (
+        <section className="course-day__block course-day__photos">
+          <h2>Day {String(day.day).padStart(2, '0')} photos</h2>
+          <PhotoGrid day={day.day} showFilters={false} />
         </section>
       )}
 

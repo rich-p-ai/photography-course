@@ -47,6 +47,10 @@
   color: var(--text);
 }
 
+.course-day__upload-cta {
+  margin: 0 0 2.25rem;
+}
+
 .course-day__block {
   margin-bottom: 2rem;
 }

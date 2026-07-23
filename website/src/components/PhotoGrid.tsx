@@ -1,22 +1,33 @@
 import { useMemo, useState } from 'react'
-import { categories, photos, type PhotoCategory } from '../data/photos'
+import {
+  categories,
+  photos,
+  photosForDay,
+  type PhotoCategory,
+} from '../data/photos'
 import { Lightbox } from './Lightbox'
 import './PhotoGrid.css'
 
 type PhotoGridProps = {
   limit?: number
   showFilters?: boolean
+  day?: number
 }
 
-export function PhotoGrid({ limit, showFilters = true }: PhotoGridProps) {
+export function PhotoGrid({
+  limit,
+  showFilters = true,
+  day,
+}: PhotoGridProps) {
   const [filter, setFilter] = useState<PhotoCategory | 'All'>('All')
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
 
   const filtered = useMemo(() => {
+    const base = typeof day === 'number' ? photosForDay(day) : photos
     const list =
-      filter === 'All' ? photos : photos.filter((photo) => photo.category === filter)
+      filter === 'All' ? base : base.filter((photo) => photo.category === filter)
     return typeof limit === 'number' ? list.slice(0, limit) : list
-  }, [filter, limit])
+  }, [day, filter, limit])
 
   return (
     <div className="photo-grid-wrap">

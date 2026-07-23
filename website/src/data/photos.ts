@@ -233,7 +233,89 @@ export const photos: Photo[] = [
     width: 2000,
     height: 1333,
   },
+  {
+    id: 'waiting',
+    title: 'Waiting',
+    caption:
+      'Empty bar stool and picket rail — red balcony glow pulls the eye across the street.',
+    location: 'Isle of Palms, SC',
+    date: '2026-07-23',
+    day: 1,
+    category: 'Street',
+    src: photoSrc('waiting.jpg'),
+    width: 576,
+    height: 1024,
+  },
+  {
+    id: 'evening-arrangement',
+    title: 'Evening Arrangement',
+    caption:
+      'Planter as foreground subject — hanging chairs soften into layers behind.',
+    location: 'Isle of Palms, SC',
+    date: '2026-07-23',
+    day: 1,
+    category: 'Street',
+    src: photoSrc('evening-arrangement.jpg'),
+    width: 1024,
+    height: 576,
+  },
+  {
+    id: 'iop-street-light',
+    title: 'IOP Street Light',
+    caption:
+      'Lamppost and parking sign as vertical anchors — wet pavement carries the red light.',
+    location: 'Isle of Palms, SC',
+    date: '2026-07-23',
+    day: 1,
+    category: 'Street',
+    src: photoSrc('iop-street-light.jpg'),
+    width: 576,
+    height: 1024,
+  },
+  {
+    id: 'delivery-hour',
+    title: 'Delivery Hour',
+    caption:
+      'Sysco ramp and orange cone lead into the street — palm lines and flag hold the depth.',
+    location: 'Isle of Palms, SC',
+    date: '2026-07-23',
+    day: 1,
+    category: 'Street',
+    src: photoSrc('delivery-hour.jpg'),
+    width: 1024,
+    height: 576,
+  },
+  {
+    id: 'parking-kiosk',
+    title: 'Parking Kiosk',
+    caption:
+      'Blue kiosk sign as subject on thirds — palm alleys and street glow as the leading path.',
+    location: 'Isle of Palms, SC',
+    date: '2026-07-23',
+    day: 1,
+    category: 'Street',
+    src: photoSrc('parking-kiosk.jpg'),
+    width: 1024,
+    height: 576,
+  },
+  {
+    id: 'suspended-calm',
+    title: 'Suspended Calm',
+    caption:
+      'Macramé swings framed under the pergola — layered stillness before the street work.',
+    location: 'Isle of Palms, SC',
+    date: '2026-07-23',
+    day: 1,
+    category: 'Street',
+    src: photoSrc('suspended-calm.jpg'),
+    width: 1024,
+    height: 576,
+  },
 ]
+
+export function photosForDay(day: number): Photo[] {
+  return photos.filter((photo) => photo.day === day)
+}
 
 export const heroPhoto =
   photos.find((p) => p.id === 'over-the-marsh') ?? photos[0]

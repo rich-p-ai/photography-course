@@ -10,14 +10,31 @@ type StagedFile = {
   id: string
   file: File
   url: string
+  kind: 'image' | 'note'
 }
 
 type UploadForReviewProps = {
   day: CourseDay
 }
 
+const MAX_STAGED = 10
+
 function storageKey(day: number) {
   return `rs-course-day-${day}-reflection`
+}
+
+function isNoteFile(file: File) {
+  const name = file.name.toLowerCase()
+  return (
+    file.type === 'text/markdown' ||
+    file.type === 'text/plain' ||
+    name.endsWith('.md') ||
+    name.endsWith('.txt')
+  )
+}
+
+function isImageFile(file: File) {
+  return file.type.startsWith('image/')
 }
 
 export function UploadForReview({ day }: UploadForReviewProps) {
@@ -111,19 +128,30 @@ export function UploadForReview({ day }: UploadForReviewProps) {
 
   function onPick(list: FileList | null) {
     if (!list?.length) return
-    const next = Array.from(list)
-      .filter((f) => f.type.startsWith('image/'))
-      .slice(0, 8)
-      .map((file) => ({
-        id: `${file.name}-${file.lastModified}-${Math.random()}`,
-        file,
-        url: URL.createObjectURL(file),
-      }))
+    const picked = Array.from(list).filter(
+      (f) => isImageFile(f) || isNoteFile(f),
+    )
+    const next = picked.slice(0, MAX_STAGED).map((file) => ({
+      id: `${file.name}-${file.lastModified}-${Math.random()}`,
+      file,
+      url: URL.createObjectURL(file),
+      kind: (isNoteFile(file) ? 'note' : 'image') as 'image' | 'note',
+    }))
     setFiles((prev) => {
       prev.forEach((f) => URL.revokeObjectURL(f.url))
       return next
     })
-    setStatus(`${next.length} image${next.length === 1 ? '' : 's'} staged for review.`)
+    const images = next.filter((f) => f.kind === 'image').length
+    const notes = next.filter((f) => f.kind === 'note').length
+    const parts = [
+      images ? `${images} photo${images === 1 ? '' : 's'}` : '',
+      notes ? `${notes} note${notes === 1 ? '' : 's'}` : '',
+    ].filter(Boolean)
+    setStatus(
+      parts.length
+        ? `${parts.join(' + ')} staged for review.`
+        : 'No photos or notes selected. Choose JPEG/PNG/WebP or .md/.txt files.',
+    )
   }
 
   function removeFile(id: string) {
@@ -147,9 +175,9 @@ export function UploadForReview({ day }: UploadForReviewProps) {
     setStatus('Downloaded reflection.md — save it into the Day folder, then commit.')
   }
 
-  async function downloadImages() {
+  async function downloadStagedFiles() {
     if (!files.length) {
-      setStatus('Add images first.')
+      setStatus('Add photos or notes first.')
       return
     }
     for (const staged of files) {
@@ -160,7 +188,7 @@ export function UploadForReview({ day }: UploadForReviewProps) {
       await new Promise((r) => setTimeout(r, 120))
     }
     setStatus(
-      `Downloaded ${files.length} image(s). Move them into ${folder}/, commit & push.`,
+      `Downloaded ${files.length} file(s). Move them into ${folder}/, commit & push.`,
     )
   }
 
@@ -184,7 +212,7 @@ export function UploadForReview({ day }: UploadForReviewProps) {
       </p>
 
       <ol className="upload-review__steps">
-        <li>Stage images + reflection here</li>
+        <li>Upload photos + notes here</li>
         <li>
           Save files into{' '}
           <a href={githubUrl} target="_blank" rel="noreferrer">
@@ -198,26 +226,36 @@ export function UploadForReview({ day }: UploadForReviewProps) {
         <input
           ref={inputRef}
           type="file"
-          accept="image/jpeg,image/png,image/webp,image/*"
+          accept="image/jpeg,image/png,image/webp,image/*,.md,.txt,text/markdown,text/plain"
           multiple
           className="upload-review__input"
           onChange={(e) => onPick(e.target.files)}
         />
         <button
           type="button"
-          className="btn btn-outline"
+          className="btn btn-primary"
           onClick={() => inputRef.current?.click()}
         >
-          Choose images
+          Upload notes &amp; photos
         </button>
-        <p>JPEG preferred · up to 8 files staged locally (not uploaded to a server)</p>
+        <p>
+          Select edited JPEGs + reflection notes (.md / .txt) · up to {MAX_STAGED}{' '}
+          files staged locally (not uploaded to a server)
+        </p>
       </div>
 
       {files.length > 0 && (
         <ul className="upload-review__thumbs">
           {files.map((f) => (
             <li key={f.id}>
-              <img src={f.url} alt={f.file.name} />
+              {f.kind === 'image' ? (
+                <img src={f.url} alt={f.file.name} />
+              ) : (
+                <div className="upload-review__note-tile" aria-hidden="true">
+                  <span>Notes</span>
+                  <strong>{f.file.name}</strong>
+                </div>
+              )}
               <div className="upload-review__thumb-meta">
                 <span>{f.file.name}</span>
                 <button type="button" onClick={() => removeFile(f.id)}>
@@ -275,8 +313,12 @@ export function UploadForReview({ day }: UploadForReviewProps) {
         <button type="button" className="btn btn-primary" onClick={downloadReflection}>
           Download reflection.md
         </button>
-        <button type="button" className="btn btn-outline" onClick={downloadImages}>
-          Download staged images
+        <button
+          type="button"
+          className="btn btn-outline"
+          onClick={downloadStagedFiles}
+        >
+          Download staged files
         </button>
         <button type="button" className="btn btn-outline" onClick={copyReviewPrompt}>
           Copy review prompt

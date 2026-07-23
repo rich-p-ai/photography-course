@@ -70,11 +70,36 @@
   gap: 0.4rem;
 }
 
-.upload-review__thumbs img {
+.upload-review__thumbs img,
+.upload-review__note-tile {
   width: 100%;
   aspect-ratio: 1;
   object-fit: cover;
   background: var(--accent-soft);
+}
+
+.upload-review__note-tile {
+  display: grid;
+  place-content: center;
+  gap: 0.35rem;
+  padding: 0.75rem;
+  text-align: center;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+}
+
+.upload-review__note-tile span {
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.upload-review__note-tile strong {
+  font-size: 0.78rem;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+  color: var(--text);
 }
 
 .upload-review__thumb-meta {
