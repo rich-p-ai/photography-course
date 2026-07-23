@@ -1,4 +1,5 @@
 import { Link, Navigate, useParams } from 'react-router-dom'
+import { StudyMaterialItem } from '../components/StudyMaterialItem'
 import { UploadForReview } from '../components/UploadForReview'
 import {
   courseDays,
@@ -56,9 +57,11 @@ export function CourseDay() {
       {day.studyMaterial.length > 0 && (
         <section className="course-day__block">
           <h2>Study material</h2>
-          <ul>
+          <ul className="course-day__study-list">
             {day.studyMaterial.map((item) => (
-              <li key={item}>{item}</li>
+              <li key={item}>
+                <StudyMaterialItem text={item} />
+              </li>
             ))}
           </ul>
         </section>
