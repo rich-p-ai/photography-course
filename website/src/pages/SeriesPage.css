@@ -1,6 +1,6 @@
 .series-page {
   padding-bottom: clamp(3rem, 8vw, 5.5rem);
-  max-width: min(100%, 72rem);
+  max-width: min(100%, 52rem);
   margin-inline: auto;
 }
 

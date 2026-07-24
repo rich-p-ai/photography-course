@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react'
 import type { Series, SeriesResolvedFrame } from '../data/series'
 import { Lightbox } from './Lightbox'
-import { PhotoRows } from './PhotoGrid'
 import './SeriesEssay.css'
 
 type SeriesEssayProps = {
@@ -25,20 +24,6 @@ export function SeriesEssay({ series, frames }: SeriesEssayProps) {
     [frames],
   )
 
-  const photos = useMemo(() => frames.map((frame) => frame.photo), [frames])
-
-  const captionById = useMemo(() => {
-    const map = new Map<string, string>()
-    frames.forEach((frame) => map.set(frame.photo.id, frame.caption))
-    return map
-  }, [frames])
-
-  const indexById = useMemo(() => {
-    const map = new Map<string, number>()
-    frames.forEach((frame, index) => map.set(frame.photo.id, index))
-    return map
-  }, [frames])
-
   return (
     <article className="series-essay">
       <header className="series-essay__intro">
@@ -54,23 +39,33 @@ export function SeriesEssay({ series, frames }: SeriesEssayProps) {
         <p className="series-essay__prose">{series.journey}</p>
       </section>
 
-      <section className="series-essay__gallery" aria-label={`${series.title} frames`}>
-        <PhotoRows
-          photos={photos}
-          captionMode="quiet"
-          syncScroll={false}
-          showNumbers={false}
-          indexById={indexById}
-          onOpen={(photoId) => {
-            const index = indexById.get(photoId)
-            if (typeof index === 'number') setActiveIndex(index)
-          }}
-          captionFor={(photo) => ({
-            title: photo.title,
-            meta: captionById.get(photo.id) ?? photo.caption,
-          })}
-        />
-      </section>
+      <ol className="series-essay__sequence">
+        {frames.map((frame, index) => (
+          <li key={frame.photo.id} className="series-essay__frame">
+            <button
+              type="button"
+              className="series-essay__image-btn"
+              onClick={() => setActiveIndex(index)}
+              aria-label={`View ${frame.photo.title} larger`}
+            >
+              <img
+                src={frame.photo.src}
+                alt={frame.photo.title}
+                width={frame.photo.width}
+                height={frame.photo.height}
+                loading={index === 0 ? 'eager' : 'lazy'}
+              />
+            </button>
+            <div className="series-essay__meta">
+              <p className="series-essay__frame-num" aria-hidden="true">
+                {String(index + 1).padStart(2, '0')}
+              </p>
+              <h3 className="series-essay__frame-title">{frame.photo.title}</h3>
+              <p className="series-essay__caption">{frame.caption}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
 
       <footer className="series-essay__closing">
         <h2 className="series-essay__label">Closing</h2>
