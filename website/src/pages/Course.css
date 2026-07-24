@@ -1,12 +1,12 @@
 .course__lede {
-  margin-bottom: 2rem;
+  margin-bottom: 2.25rem;
 }
 
 .course__meta {
   display: grid;
-  gap: 1.1rem;
-  margin: 0 0 2.75rem;
-  padding: 1.35rem 0;
+  gap: 1.2rem;
+  margin: 0 0 3rem;
+  padding: 1.5rem 0;
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
 }
@@ -29,8 +29,9 @@
 .course__meta dd {
   margin: 0;
   font-family: var(--font-display);
-  font-size: 1.02rem;
+  font-size: 1.15rem;
   letter-spacing: -0.02em;
+  font-weight: 500;
 }
 
 .course__list {
@@ -46,7 +47,7 @@
   grid-template-columns: 1fr auto;
   gap: 1rem;
   align-items: center;
-  padding: 1.15rem 0;
+  padding: 1.25rem 0;
   border-bottom: 1px solid var(--border);
 }
 
@@ -64,7 +65,7 @@
 }
 
 .course__day {
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--text-muted);
@@ -82,8 +83,9 @@
 
 .course__name {
   font-family: var(--font-display);
-  font-size: 1.15rem;
+  font-size: 1.3rem;
   letter-spacing: -0.02em;
+  font-weight: 500;
 }
 
 .course__sub {
@@ -101,7 +103,7 @@
 
 .course__upload,
 .course__cta {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--text-muted);

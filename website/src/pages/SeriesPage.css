@@ -1,6 +1,6 @@
 .series-page {
-  padding-bottom: clamp(3rem, 8vw, 5rem);
-  max-width: 56rem;
+  padding-bottom: clamp(3rem, 8vw, 5.5rem);
+  max-width: min(100%, 72rem);
   margin-inline: auto;
 }
 
@@ -10,8 +10,8 @@
   align-items: center;
   gap: 0.5rem;
   margin-bottom: clamp(2rem, 5vw, 3rem);
-  font-size: 0.8rem;
-  letter-spacing: 0.08em;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text-muted);
 }
@@ -34,6 +34,7 @@
   margin-top: clamp(3.5rem, 9vw, 5.5rem);
   padding-top: 1.75rem;
   border-top: 1px solid var(--border);
+  max-width: 36rem;
 }
 
 .series-page__pager-side--end {
@@ -61,7 +62,7 @@
 
 .series-page__pager-title {
   font-family: var(--font-display);
-  font-size: 1.05rem;
+  font-size: 1.2rem;
   font-weight: 500;
   letter-spacing: -0.02em;
 }
@@ -73,8 +74,8 @@
 }
 
 .series-page__dot {
-  width: 0.45rem;
-  height: 0.45rem;
+  width: 0.4rem;
+  height: 0.4rem;
   border-radius: 50%;
   background: var(--border);
   transition:

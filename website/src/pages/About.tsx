@@ -7,12 +7,16 @@ export function About() {
     <section className="page page-narrow about">
       <p className="section-label">About</p>
       <h1 className="page-title">Slowing down through the lens</h1>
+      <p className="page-lede about__lede">
+        A grounding practice built on walking, noticing, and making quiet frames
+        in natural light.
+      </p>
 
       <div className="about__body">
         <p>
           I work in IT and AI by day. Photography is how I step out of that
-          pace — a grounding practice built on walking, noticing, and making
-          quiet frames in natural light.
+          pace — walking, noticing, and making quiet frames when the light is
+          soft.
         </p>
         <p>
           Based in Charleston and Isle of Palms, with recent work from Old San

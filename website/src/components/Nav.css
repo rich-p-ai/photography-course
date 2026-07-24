@@ -16,9 +16,9 @@
 
 .nav--solid {
   color: var(--text);
-  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  background: color-mix(in srgb, var(--bg) 86%, transparent);
   border-bottom: 1px solid var(--border);
-  backdrop-filter: blur(14px);
+  backdrop-filter: blur(16px);
 }
 
 .nav__inner {
@@ -32,22 +32,22 @@
 
 .nav__brand {
   font-family: var(--font-display);
-  font-size: 1.15rem;
+  font-size: 1.35rem;
   font-weight: 600;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.025em;
   white-space: nowrap;
 }
 
 .nav__links {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1.55rem;
 }
 
 .nav__link {
-  font-size: 0.92rem;
+  font-size: 0.9rem;
   color: inherit;
-  opacity: 0.78;
+  opacity: 0.72;
   transition: opacity 0.2s var(--ease);
 }
 
@@ -57,10 +57,10 @@
 }
 
 .nav__theme {
-  font-size: 0.8rem;
-  letter-spacing: 0.08em;
+  font-size: 0.74rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  opacity: 0.85;
+  opacity: 0.82;
   border-bottom: 1px solid currentColor;
   padding-bottom: 0.1rem;
 }
@@ -71,8 +71,8 @@
 
 .nav__menu-btn {
   display: none;
-  font-size: 0.9rem;
-  letter-spacing: 0.06em;
+  font-size: 0.86rem;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
@@ -97,8 +97,8 @@
     inset: var(--nav-h) 0 auto;
     flex-direction: column;
     align-items: flex-start;
-    gap: 1.1rem;
-    padding: 1.25rem var(--page-pad) 1.75rem;
+    gap: 1.15rem;
+    padding: 1.35rem var(--page-pad) 1.85rem;
     background: var(--bg);
     color: var(--text);
     border-bottom: 1px solid var(--border);

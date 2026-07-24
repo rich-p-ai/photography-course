@@ -1,4 +1,10 @@
-import { useEffect, useMemo, useState } from 'react'
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type CSSProperties,
+} from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import {
   groupPhotosBySet,
@@ -20,13 +26,17 @@ type PhotoGridProps = {
   day?: number
   /** Group frames under set headings. Default: on when not limited. */
   groupBySet?: boolean
-  /** overlay = portfolio hover captions; below = series page under-image captions */
-  captionMode?: 'overlay' | 'below'
+  /** quiet = under-image captions; overlay = hover captions on frames */
+  captionMode?: 'quiet' | 'overlay' | 'below'
   /**
-   * editorial = alternating left/right flow (portfolio default)
-   * masonry = compact multi-column (home / limited grids)
+   * rows = multi-row horizontal scroller (default for portfolio / home / series)
+   * masonry = compact multi-column (course day / dense lists)
    */
-  layout?: 'editorial' | 'masonry'
+  layout?: 'rows' | 'masonry'
+  /** Number of horizontal rows. Auto: 1–3 based on photo count. */
+  rowCount?: number
+  /** Sync horizontal scroll across rows. */
+  syncScroll?: boolean
 }
 
 export function PhotoGrid({
@@ -35,8 +45,10 @@ export function PhotoGrid({
   showFilters = true,
   day,
   groupBySet,
-  captionMode = 'overlay',
+  captionMode = 'quiet',
   layout: layoutProp,
+  rowCount: rowCountProp,
+  syncScroll = false,
 }: PhotoGridProps) {
   const [searchParams, setSearchParams] = useSearchParams()
   const tabParam = searchParams.get('tab')
@@ -56,11 +68,11 @@ export function PhotoGrid({
   }, [tabParam, showFilters])
 
   const shouldGroup =
-    groupBySet ?? (typeof limit !== 'number' && captionMode === 'overlay')
+    groupBySet ?? (typeof limit !== 'number' && captionMode !== 'below')
 
   const layout =
     layoutProp ??
-    (captionMode === 'below' || typeof limit === 'number' ? 'masonry' : 'editorial')
+    (captionMode === 'below' || typeof day === 'number' ? 'masonry' : 'rows')
 
   const filtered = useMemo(() => {
     const base =
@@ -73,8 +85,8 @@ export function PhotoGrid({
   }, [day, filter, limit, photosProp])
 
   const sets = useMemo(
-    () => (shouldGroup && filter !== 'Series' ? groupPhotosBySet(filtered) : null),
-    [filtered, shouldGroup, filter],
+    () => (shouldGroup && filter !== 'Series' && layout === 'rows' ? groupPhotosBySet(filtered) : null),
+    [filtered, shouldGroup, filter, layout],
   )
 
   function selectTab(tab: PortfolioTab) {
@@ -88,11 +100,22 @@ export function PhotoGrid({
     }
   }
 
-  let runningIndex = 0
-  const isEditorial = layout === 'editorial' && captionMode === 'overlay'
+  const caption = captionMode === 'below' ? 'below' : captionMode === 'overlay' ? 'overlay' : 'quiet'
+  const isRows = layout === 'rows'
+
+  const indexById = useMemo(() => {
+    const map = new Map<string, number>()
+    filtered.forEach((photo, index) => map.set(photo.id, index))
+    return map
+  }, [filtered])
+
+  function openPhoto(photoId: string) {
+    const index = indexById.get(photoId)
+    if (typeof index === 'number') setActiveIndex(index)
+  }
 
   return (
-    <div className={`photo-grid-wrap ${isEditorial ? 'photo-grid-wrap--editorial' : ''}`}>
+    <div className={`photo-grid-wrap ${isRows ? 'photo-grid-wrap--rows' : ''}`}>
       {showFilters && (
         <div className="filters" role="tablist" aria-label="Filter portfolio">
           {portfolioTabs.map((tab) => (
@@ -113,13 +136,13 @@ export function PhotoGrid({
       {filter === 'Series' && showFilters ? (
         <SeriesCards />
       ) : sets ? (
-        <div className={isEditorial ? 'photo-sets photo-sets--editorial' : 'photo-sets'}>
-          {sets.map((group, setIndex) => {
+        <div className="photo-sets photo-sets--rows">
+          {sets.map((group) => {
             const series = seriesByTitle(group.set)
             return (
               <section
                 key={group.set}
-                className={`photo-set ${isEditorial ? `photo-set--${setIndex % 2 === 0 ? 'lead-left' : 'lead-right'}` : ''}`}
+                className="photo-set"
                 aria-labelledby={`set-${slug(group.set)}`}
               >
                 <header className="photo-set__header">
@@ -141,47 +164,37 @@ export function PhotoGrid({
                     {group.photos.length === 1 ? 'frame' : 'frames'}
                   </p>
                 </header>
-                <div
-                  className={
-                    isEditorial ? 'photo-flow' : 'photo-grid'
-                  }
-                >
-                  {group.photos.map((photo) => {
-                    const index = runningIndex++
-                    return (
-                      <PhotoCard
-                        key={photo.id}
-                        photo={photo}
-                        index={index}
-                        captionMode={captionMode}
-                        layout={isEditorial ? 'editorial' : 'masonry'}
-                        onOpen={setActiveIndex}
-                      />
-                    )
-                  })}
-                </div>
+                <PhotoRows
+                  photos={group.photos}
+                  captionMode={caption}
+                  rowCount={rowCountProp}
+                  syncScroll={syncScroll}
+                  onOpen={openPhoto}
+                />
               </section>
             )
           })}
         </div>
+      ) : isRows ? (
+        <PhotoRows
+          photos={filtered}
+          captionMode={caption}
+          rowCount={rowCountProp}
+          syncScroll={syncScroll}
+          onOpen={openPhoto}
+        />
       ) : (
         <div
           className={
-            captionMode === 'below'
-              ? 'photo-grid photo-grid--below'
-              : isEditorial
-                ? 'photo-flow'
-                : 'photo-grid'
+            caption === 'below' ? 'photo-grid photo-grid--below' : 'photo-grid'
           }
         >
-          {filtered.map((photo, index) => (
+          {filtered.map((photo) => (
             <PhotoCard
               key={photo.id}
               photo={photo}
-              index={index}
-              captionMode={captionMode}
-              layout={isEditorial ? 'editorial' : 'masonry'}
-              onOpen={setActiveIndex}
+              captionMode={caption}
+              onOpen={openPhoto}
             />
           ))}
         </div>
@@ -199,29 +212,138 @@ export function PhotoGrid({
   )
 }
 
+type CaptionMode = 'quiet' | 'overlay' | 'below'
+
+export type PhotoRowCaption = { title: string; meta: string }
+
+function PhotoRows({
+  photos,
+  captionMode,
+  rowCount: rowCountProp,
+  syncScroll = false,
+  onOpen,
+  captionFor,
+}: {
+  photos: Photo[]
+  captionMode: CaptionMode
+  rowCount?: number
+  syncScroll?: boolean
+  onOpen: (photoId: string) => void
+  captionFor?: (photo: Photo) => PhotoRowCaption
+}) {
+  const rowCount = rowCountProp ?? autoRowCount(photos.length)
+  const rows = useMemo(() => distributeIntoRows(photos, rowCount), [photos, rowCount])
+  const trackRefs = useRef<(HTMLDivElement | null)[]>([])
+  const syncing = useRef(false)
+
+  function handleScroll(sourceIndex: number) {
+    if (!syncScroll) return
+    const source = trackRefs.current[sourceIndex]
+    if (!source || syncing.current) return
+    syncing.current = true
+    const ratio =
+      source.scrollWidth <= source.clientWidth
+        ? 0
+        : source.scrollLeft / (source.scrollWidth - source.clientWidth)
+    trackRefs.current.forEach((track, i) => {
+      if (!track || i === sourceIndex) return
+      const max = track.scrollWidth - track.clientWidth
+      track.scrollLeft = ratio * Math.max(max, 0)
+    })
+    requestAnimationFrame(() => {
+      syncing.current = false
+    })
+  }
+
+  function scrollRow(rowIndex: number, direction: -1 | 1) {
+    const track = trackRefs.current[rowIndex]
+    if (!track) return
+    const delta = Math.round(track.clientWidth * 0.72) * direction
+    track.scrollBy({ left: delta, behavior: 'smooth' })
+  }
+
+  if (photos.length === 0) return null
+
+  return (
+    <div
+      className={`photo-rows ${syncScroll ? 'photo-rows--synced' : ''}`}
+      style={{ '--row-count': rowCount } as CSSProperties}
+    >
+      {rows.map((row, rowIndex) => (
+        <div key={rowIndex} className="photo-row">
+          <div className="photo-row__controls" aria-hidden={row.length < 2}>
+            <button
+              type="button"
+              className="photo-row__nav photo-row__nav--prev"
+              aria-label={`Scroll row ${rowIndex + 1} left`}
+              onClick={() => scrollRow(rowIndex, -1)}
+              tabIndex={row.length < 2 ? -1 : 0}
+            >
+              ‹
+            </button>
+            <button
+              type="button"
+              className="photo-row__nav photo-row__nav--next"
+              aria-label={`Scroll row ${rowIndex + 1} right`}
+              onClick={() => scrollRow(rowIndex, 1)}
+              tabIndex={row.length < 2 ? -1 : 0}
+            >
+              ›
+            </button>
+          </div>
+          <div
+            className="photo-row__track"
+            ref={(el) => {
+              trackRefs.current[rowIndex] = el
+            }}
+            onScroll={() => handleScroll(rowIndex)}
+            role="list"
+            aria-label={`Photo row ${rowIndex + 1} of ${rowCount}`}
+          >
+            {row.map((photo, cellIndex) => (
+              <div key={photo.id} className="photo-row__cell" role="listitem">
+                <PhotoCard
+                  photo={photo}
+                  order={rowIndex * 8 + cellIndex}
+                  captionMode={captionMode}
+                  variant="row"
+                  captionOverride={captionFor?.(photo)}
+                  onOpen={onOpen}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
 function PhotoCard({
   photo,
-  index,
+  order = 0,
   captionMode,
-  layout,
+  variant = 'masonry',
+  captionOverride,
   onOpen,
 }: {
   photo: Photo
-  index: number
-  captionMode: 'overlay' | 'below'
-  layout: 'editorial' | 'masonry'
-  onOpen: (index: number) => void
+  order?: number
+  captionMode: CaptionMode
+  variant?: 'row' | 'masonry'
+  captionOverride?: PhotoRowCaption
+  onOpen: (photoId: string) => void
 }) {
   if (captionMode === 'below') {
     return (
       <figure
         className="photo-grid__figure"
-        style={{ animationDelay: `${index * 40}ms` }}
+        style={{ animationDelay: `${Math.min(order, 16) * 35}ms` }}
       >
         <button
           type="button"
           className="photo-grid__item photo-grid__item--plain"
-          onClick={() => onOpen(index)}
+          onClick={() => onOpen(photo.id)}
         >
           <img
             src={photo.src}
@@ -239,18 +361,17 @@ function PhotoCard({
     )
   }
 
-  if (layout === 'editorial') {
-    const side = index % 2 === 0 ? 'left' : 'right'
+  if (variant === 'row') {
     const orientation = photo.width >= photo.height ? 'landscape' : 'portrait'
     return (
-      <div
-        className={`photo-flow__row photo-flow__row--${side}`}
-        style={{ animationDelay: `${Math.min(index, 12) * 45}ms` }}
+      <figure
+        className={`photo-row__figure photo-row__figure--${orientation}`}
+        style={{ animationDelay: `${Math.min(order, 16) * 40}ms` }}
       >
         <button
           type="button"
-          className={`photo-grid__item photo-flow__frame photo-flow__frame--${orientation}`}
-          onClick={() => onOpen(index)}
+          className={`photo-grid__item photo-row__frame ${captionMode === 'quiet' ? 'photo-row__frame--quiet' : ''}`}
+          onClick={() => onOpen(photo.id)}
         >
           <img
             src={photo.src}
@@ -259,15 +380,28 @@ function PhotoCard({
             width={photo.width}
             height={photo.height}
           />
-          <span className="photo-grid__caption">
-            <span className="photo-grid__title">{photo.title}</span>
-            <span className="photo-grid__meta">
-              {photo.category}
-              {photo.day ? ` · Day ${String(photo.day).padStart(2, '0')}` : ''}
+          {captionMode === 'overlay' && (
+            <span className="photo-grid__caption">
+              <span className="photo-grid__title">{photo.title}</span>
+              <span className="photo-grid__meta">
+                {photo.category}
+                {photo.day ? ` · Day ${String(photo.day).padStart(2, '0')}` : ''}
+              </span>
             </span>
-          </span>
+          )}
         </button>
-      </div>
+        {captionMode === 'quiet' && (
+          <figcaption className="photo-row__caption">
+            <span className="photo-row__caption-title">
+              {captionOverride?.title ?? photo.title}
+            </span>
+            <span className="photo-row__caption-meta">
+              {captionOverride?.meta ??
+                `${photo.category}${photo.day ? ` · Day ${String(photo.day).padStart(2, '0')}` : ''}`}
+            </span>
+          </figcaption>
+        )}
+      </figure>
     )
   }
 
@@ -275,8 +409,8 @@ function PhotoCard({
     <button
       type="button"
       className="photo-grid__item"
-      style={{ animationDelay: `${index * 40}ms` }}
-      onClick={() => onOpen(index)}
+      style={{ animationDelay: `${order * 40}ms` }}
+      onClick={() => onOpen(photo.id)}
     >
       <img
         src={photo.src}
@@ -296,6 +430,22 @@ function PhotoCard({
   )
 }
 
+function autoRowCount(count: number): number {
+  if (count <= 3) return 1
+  if (count <= 8) return 2
+  return 3
+}
+
+function distributeIntoRows(photos: Photo[], rowCount: number): Photo[][] {
+  const rows: Photo[][] = Array.from({ length: Math.max(1, rowCount) }, () => [])
+  photos.forEach((photo, i) => {
+    rows[i % rows.length]!.push(photo)
+  })
+  return rows.filter((row) => row.length > 0)
+}
+
 function slug(value: string): string {
   return value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
 }
+
+export { PhotoRows, distributeIntoRows, autoRowCount }

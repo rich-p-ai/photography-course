@@ -161,7 +161,7 @@ export function CourseDay() {
       {dayPhotos.length > 0 && (
         <section className="course-day__block course-day__photos">
           <h2>Day {String(day.day).padStart(2, '0')} photos</h2>
-          <PhotoGrid day={day.day} showFilters={false} />
+          <PhotoGrid day={day.day} showFilters={false} layout="rows" />
         </section>
       )}
 

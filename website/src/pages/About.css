@@ -1,9 +1,14 @@
+.about__lede {
+  margin-bottom: 0.25rem;
+}
+
 .about__body {
   display: grid;
-  gap: 1.15rem;
+  gap: 1.2rem;
   color: var(--text-muted);
-  font-size: 1.05rem;
-  margin: 1.75rem 0 2.5rem;
+  font-size: 1.06rem;
+  line-height: 1.7;
+  margin: 1.85rem 0 2.75rem;
 }
 
 .about__body a {
@@ -13,9 +18,9 @@
 
 .about__facts {
   display: grid;
-  gap: 1.25rem;
-  margin: 0 0 2.5rem;
-  padding: 1.5rem 0;
+  gap: 1.35rem;
+  margin: 0 0 2.75rem;
+  padding: 1.6rem 0;
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
 }
@@ -31,8 +36,9 @@
 .about__facts dd {
   margin: 0;
   font-family: var(--font-display);
-  font-size: 1.05rem;
+  font-size: 1.2rem;
   letter-spacing: -0.02em;
+  font-weight: 500;
 }
 
 .about__actions {

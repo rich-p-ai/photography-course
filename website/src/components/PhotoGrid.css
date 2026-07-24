@@ -3,7 +3,7 @@
   gap: 1.75rem;
 }
 
-.photo-grid-wrap--editorial {
+.photo-grid-wrap--rows {
   gap: clamp(2rem, 4vw, 2.75rem);
 }
 
@@ -12,13 +12,13 @@
 .filters {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.35rem 1.35rem;
+  gap: 0.35rem 1.5rem;
   border-bottom: 1px solid var(--border);
-  padding-bottom: 0.95rem;
+  padding-bottom: 1rem;
 }
 
 .filters__btn {
-  font-size: 0.88rem;
+  font-size: 0.86rem;
   color: var(--text-muted);
   padding: 0.25rem 0;
   border-bottom: 1px solid transparent;
@@ -40,8 +40,8 @@
   gap: 3.25rem;
 }
 
-.photo-sets--editorial {
-  gap: clamp(4rem, 10vw, 6.5rem);
+.photo-sets--rows {
+  gap: clamp(3.5rem, 8vw, 5.5rem);
 }
 
 .photo-set__header {
@@ -49,20 +49,9 @@
   align-items: baseline;
   justify-content: space-between;
   gap: 1rem;
-  margin-bottom: 1.1rem;
-  padding-bottom: 0.65rem;
+  margin-bottom: clamp(1.1rem, 3vw, 1.6rem);
+  padding-bottom: 0.75rem;
   border-bottom: 1px solid var(--border);
-}
-
-.photo-sets--editorial .photo-set__header {
-  margin-bottom: clamp(1.5rem, 4vw, 2.25rem);
-  padding-bottom: 0.85rem;
-  max-width: 100%;
-}
-
-.photo-set--lead-right .photo-set__header {
-  flex-direction: row-reverse;
-  text-align: right;
 }
 
 .photo-set__header .section-label {
@@ -79,60 +68,177 @@
 }
 
 .photo-set__count {
-  font-size: 0.75rem;
-  letter-spacing: 0.08em;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text-muted);
 }
 
-/* —— Editorial alternating flow (portfolio) —— */
+/* —— Multi-row horizontal scrollers —— */
 
-.photo-flow {
+.photo-rows {
+  display: grid;
+  gap: clamp(1.35rem, 3vw, 2rem);
+}
+
+.photo-row {
+  position: relative;
+}
+
+.photo-row__track {
   display: flex;
-  flex-direction: column;
-  gap: clamp(2.75rem, 7vw, 5rem);
-  width: 100%;
+  gap: var(--photo-gap);
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x proximity;
+  scroll-behavior: smooth;
+  padding: 0.15rem var(--page-pad) 0.35rem;
+  margin-inline: calc(var(--page-pad) * -1);
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--accent) 35%, transparent) transparent;
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    #000 1.5rem,
+    #000 calc(100% - 1.5rem),
+    transparent 100%
+  );
 }
 
-.photo-flow__row {
-  display: flex;
-  width: 100%;
-  animation: fade-up 0.7s var(--ease) both;
+.photo-row__track::-webkit-scrollbar {
+  height: 4px;
 }
 
-.photo-flow__row--left {
-  justify-content: flex-start;
-  padding-inline-end: clamp(0rem, 10vw, 7rem);
+.photo-row__track::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--accent) 35%, transparent);
+  border-radius: 999px;
 }
 
-.photo-flow__row--right {
-  justify-content: flex-end;
-  padding-inline-start: clamp(0rem, 10vw, 7rem);
+.photo-row__cell {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
 }
 
-.photo-flow__frame {
+.photo-row__figure {
   margin: 0;
+  display: grid;
+  gap: 0.55rem;
+  width: auto;
+  animation: fade-up 0.65s var(--ease) both;
+}
+
+.photo-row__frame {
+  margin: 0;
+  padding: 0;
+  height: var(--photo-row-h);
+  width: auto;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--accent-soft) 55%, transparent);
+}
+
+.photo-row__frame img {
+  width: auto;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  opacity: 0.97;
+  transition:
+    transform 0.7s var(--ease),
+    opacity 0.35s var(--ease);
+}
+
+.photo-row__figure--portrait .photo-row__frame {
+  /* Keep portraits from dominating the row width */
+  max-width: calc(var(--photo-row-h) * 0.78);
+}
+
+.photo-row__figure--portrait .photo-row__frame img {
   width: 100%;
-  max-width: min(100%, 40rem);
+  object-fit: cover;
 }
 
-.photo-flow__frame--landscape {
-  max-width: min(100%, 46rem);
+.photo-row__frame:hover img,
+.photo-row__frame:focus-visible img {
+  transform: scale(1.03);
+  opacity: 1;
 }
 
-.photo-flow__frame--portrait {
-  max-width: min(100%, 28rem);
+.photo-row__caption {
+  display: grid;
+  gap: 0.15rem;
+  max-width: 16rem;
+  padding-inline: 0.05rem;
 }
 
-.photo-flow__row--left .photo-flow__frame--portrait {
-  margin-inline-start: clamp(0rem, 4vw, 2.5rem);
+.photo-row__caption-title {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  line-height: 1.2;
 }
 
-.photo-flow__row--right .photo-flow__frame--portrait {
-  margin-inline-end: clamp(0rem, 4vw, 2.5rem);
+.photo-row__caption-meta {
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
 }
 
-/* —— Compact masonry (home / limited) —— */
+.photo-row__controls {
+  pointer-events: none;
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: var(--photo-row-h);
+  padding-inline: 0.15rem;
+  opacity: 0;
+  transition: opacity 0.25s var(--ease);
+}
+
+.photo-row:hover .photo-row__controls,
+.photo-row:focus-within .photo-row__controls {
+  opacity: 1;
+}
+
+.photo-row__controls[aria-hidden='true'] {
+  display: none;
+}
+
+.photo-row__nav {
+  pointer-events: auto;
+  width: 2.25rem;
+  height: 2.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--bg-elevated) 88%, transparent);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 1.35rem;
+  line-height: 1;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 20px rgba(12, 22, 30, 0.08);
+  transition:
+    background 0.2s var(--ease),
+    color 0.2s var(--ease),
+    transform 0.2s var(--ease);
+}
+
+.photo-row__nav:hover,
+.photo-row__nav:focus-visible {
+  background: var(--text);
+  color: var(--bg);
+  transform: scale(1.04);
+}
+
+/* —— Compact masonry (course / dense) —— */
 
 .photo-grid {
   columns: 3 280px;
@@ -150,7 +256,7 @@
   animation: fade-up 0.6s var(--ease) both;
 }
 
-.photo-flow__frame.photo-grid__item {
+.photo-row__frame.photo-grid__item {
   break-inside: auto;
   margin: 0;
   animation: none;
@@ -179,7 +285,7 @@
   gap: 0.2rem;
   padding: 2.75rem 1rem 0.95rem;
   color: #fff;
-  background: linear-gradient(transparent, rgba(8, 12, 16, 0.74));
+  background: linear-gradient(transparent, rgba(8, 16, 22, 0.72));
   opacity: 0;
   transform: translateY(8px);
   transition:
@@ -195,18 +301,19 @@
 
 .photo-grid__title {
   font-family: var(--font-display);
-  font-size: 1rem;
-  letter-spacing: -0.02em;
+  font-size: 1.15rem;
+  font-weight: 500;
+  letter-spacing: -0.015em;
 }
 
 .photo-grid__meta {
-  font-size: 0.72rem;
-  letter-spacing: 0.07em;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   opacity: 0.78;
 }
 
-/* —— Below captions (legacy / non-essay grids) —— */
+/* —— Below captions —— */
 
 .photo-grid--below {
   columns: 2 320px;
@@ -236,8 +343,8 @@
 }
 
 .photo-grid__below-title {
-  font-family: var(--font-body);
-  font-size: 0.95rem;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
   font-weight: 500;
   letter-spacing: -0.01em;
   color: var(--text);
@@ -247,40 +354,21 @@
   font-size: 0.85rem;
   font-weight: 400;
   color: var(--text-muted);
-  line-height: 1.4;
+  line-height: 1.45;
 }
 
 /* —— Portfolio page header —— */
 
 .portfolio-page__lede {
-  margin-bottom: clamp(2.5rem, 5vw, 3.5rem);
+  margin-bottom: clamp(2.5rem, 5vw, 3.75rem);
   max-width: 32rem;
 }
 
 /* —— Responsive —— */
 
 @media (max-width: 900px) {
-  .photo-flow__row--left,
-  .photo-flow__row--right {
-    padding-inline: 0;
-  }
-
-  .photo-flow__frame--landscape {
-    max-width: min(100%, 100%);
-  }
-
-  .photo-flow__frame--portrait {
-    max-width: min(100%, 72%);
-  }
-
-  .photo-flow__row--left .photo-flow__frame--portrait,
-  .photo-flow__row--right .photo-flow__frame--portrait {
-    margin-inline: 0;
-  }
-
-  .photo-set--lead-right .photo-set__header {
-    flex-direction: row;
-    text-align: left;
+  :root {
+    --photo-row-h: clamp(10rem, 34vw, 13.5rem);
   }
 }
 
@@ -293,28 +381,40 @@
     columns: 1;
   }
 
-  .photo-flow {
-    gap: clamp(2rem, 8vw, 2.75rem);
+  .photo-rows {
+    gap: 1.5rem;
   }
 
-  .photo-flow__row--left,
-  .photo-flow__row--right {
-    justify-content: stretch;
+  .photo-row__track {
+    mask-image: none;
+    padding-bottom: 0.5rem;
   }
 
-  .photo-flow__frame,
-  .photo-flow__frame--landscape,
-  .photo-flow__frame--portrait {
-    max-width: 100%;
+  .photo-row__controls {
+    display: none;
   }
 
-  .photo-sets--editorial {
-    gap: clamp(3rem, 12vw, 4rem);
+  .photo-row__caption-title {
+    font-size: 0.98rem;
+  }
+
+  .photo-sets--rows {
+    gap: clamp(2.75rem, 12vw, 3.75rem);
   }
 
   .photo-grid__caption {
     opacity: 1;
     transform: none;
     padding-top: 2rem;
+  }
+}
+
+@media (max-width: 520px) {
+  :root {
+    --photo-row-h: clamp(9.5rem, 42vw, 12rem);
+  }
+
+  .photo-row__caption {
+    max-width: 12rem;
   }
 }

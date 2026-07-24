@@ -1,8 +1,7 @@
 .series-essay {
-  --essay-measure: 38rem;
-  --essay-image: min(100%, 52rem);
+  --essay-measure: 36rem;
   display: grid;
-  gap: clamp(3rem, 8vw, 5rem);
+  gap: clamp(3rem, 7vw, 4.75rem);
 }
 
 .series-essay__intro {
@@ -11,17 +10,17 @@
 
 .series-essay__title {
   font-family: var(--font-display);
-  font-size: clamp(2.5rem, 7vw, 4rem);
+  font-size: clamp(2.75rem, 7.5vw, 4.5rem);
   font-weight: 600;
   letter-spacing: -0.03em;
   line-height: 1.05;
-  margin: 0 0 1.5rem;
+  margin: 0 0 1.35rem;
 }
 
 .series-essay__opening {
   margin: 0;
-  font-size: clamp(1.05rem, 2.2vw, 1.2rem);
-  line-height: 1.65;
+  font-size: clamp(1.08rem, 2.2vw, 1.22rem);
+  line-height: 1.7;
   color: var(--text);
   font-weight: 400;
 }
@@ -43,88 +42,33 @@
 
 .series-essay__prose {
   margin: 0;
-  font-size: 1.02rem;
-  line-height: 1.7;
+  font-size: 1.05rem;
+  line-height: 1.75;
   color: var(--text-muted);
 }
 
-.series-essay__sequence {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: clamp(3.5rem, 10vw, 6.5rem);
-  justify-items: center;
+.series-essay__gallery .photo-row__caption {
+  max-width: 18rem;
 }
 
-.series-essay__frame {
-  width: 100%;
-  max-width: var(--essay-image);
-  display: grid;
-  gap: 1.1rem;
-}
-
-.series-essay__image-btn {
-  display: block;
-  width: 100%;
-  padding: 0;
-  margin: 0;
+.series-essay__gallery .photo-row__caption-meta {
+  text-transform: none;
+  letter-spacing: 0.01em;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   overflow: hidden;
-  background: var(--border);
-  transition: opacity 0.3s var(--ease);
-}
-
-.series-essay__image-btn:hover,
-.series-essay__image-btn:focus-visible {
-  opacity: 0.92;
-}
-
-.series-essay__image-btn img {
-  width: 100%;
-  height: auto;
-  vertical-align: middle;
-  transition: transform 0.8s var(--ease);
-}
-
-.series-essay__image-btn:hover img,
-.series-essay__image-btn:focus-visible img {
-  transform: scale(1.015);
-}
-
-.series-essay__meta {
-  max-width: 32rem;
-  display: grid;
-  gap: 0.4rem;
-  padding-inline: 0.05rem;
-}
-
-.series-essay__frame-title {
-  margin: 0;
-  font-family: var(--font-body);
-  font-size: 1rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  color: var(--text);
-}
-
-.series-essay__caption {
-  margin: 0;
-  font-size: 0.95rem;
-  line-height: 1.55;
-  color: var(--text-muted);
 }
 
 .series-essay__closing {
-  padding-top: clamp(1rem, 3vw, 2rem);
+  padding-top: clamp(1rem, 3vw, 1.75rem);
   border-top: 1px solid var(--border);
 }
 
 @media (max-width: 700px) {
   .series-essay {
     gap: clamp(2.5rem, 10vw, 3.5rem);
-  }
-
-  .series-essay__sequence {
-    gap: clamp(2.75rem, 12vw, 4rem);
   }
 }

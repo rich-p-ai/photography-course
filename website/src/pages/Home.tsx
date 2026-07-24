@@ -48,7 +48,11 @@ export function Home() {
             Full portfolio
           </Link>
         </div>
-        <PhotoGrid limit={6} showFilters={false} />
+        <p className="home-selected__lede">
+          A quiet sample of recent light — scroll sideways through the rows, or
+          open any frame.
+        </p>
+        <PhotoGrid limit={9} showFilters={false} layout="rows" rowCount={3} />
       </section>
     </>
   )
