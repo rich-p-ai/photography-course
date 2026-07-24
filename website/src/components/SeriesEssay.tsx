@@ -58,8 +58,7 @@ export function SeriesEssay({ series, frames }: SeriesEssayProps) {
         <PhotoRows
           photos={photos}
           captionMode="quiet"
-          rowCount={3}
-          syncScroll
+          syncScroll={false}
           showNumbers={false}
           indexById={indexById}
           onOpen={(photoId) => {

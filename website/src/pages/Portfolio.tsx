@@ -8,10 +8,10 @@ export function Portfolio() {
         <h1 className="page-title">Selected Frames</h1>
         <p className="page-lede portfolio-page__lede">
           Quiet observational work — street, shore, and color held still. Scroll
-          the rows together, or open Series for the longer sequences.
+          each row on its own, or open Series for the longer sequences.
         </p>
       </header>
-      <PhotoGrid layout="rows" rowCount={3} syncScroll groupBySet={false} />
+      <PhotoGrid layout="rows" syncScroll={false} groupBySet={false} />
     </section>
   )
 }

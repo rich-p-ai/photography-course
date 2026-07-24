@@ -28,7 +28,8 @@
   --page-pad: clamp(1.35rem, 4.5vw, 4rem);
   --space-section: clamp(3.5rem, 8vw, 6rem);
   --photo-row-h: clamp(13rem, 26vw, 18.5rem);
-  --photo-gap: clamp(1.35rem, 3.5vw, 2.75rem);
+  --photo-gap: clamp(0.85rem, 2vw, 1.35rem);
+  --photos-visible: 3;
 }
 
 [data-theme='dark'] {

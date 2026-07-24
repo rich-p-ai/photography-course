@@ -74,16 +74,20 @@
   color: var(--text-muted);
 }
 
-/* —— Multi-row horizontal scrollers (editorial, max 3 rows) —— */
+/* —— Independent row carousels (max 3 rows, 3 visible, snap one-by-one) —— */
 
 .photo-rows {
-  position: relative;
   display: grid;
   gap: clamp(2rem, 5vw, 3.25rem);
-  padding-inline: 2.6rem;
 }
 
-.photo-rows__controls {
+.photo-row {
+  position: relative;
+  min-height: calc(var(--photo-row-h) + 2.75rem);
+  padding-inline: 2.5rem;
+}
+
+.photo-row__controls {
   pointer-events: none;
   position: absolute;
   inset: 0;
@@ -91,11 +95,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.photo-row {
-  position: relative;
-  min-height: calc(var(--photo-row-h) + 2.5rem);
+  height: calc(var(--photo-row-h) + 1.75rem);
+  margin-top: 0.35rem;
 }
 
 .photo-row__track {
@@ -104,43 +105,51 @@
   gap: var(--photo-gap);
   overflow-x: auto;
   overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  overscroll-behavior-y: none;
   scroll-snap-type: x mandatory;
+  scroll-padding-inline: 0;
   scroll-behavior: smooth;
-  padding: 1.25rem 0 0.75rem;
+  padding: 1.1rem 0 0.65rem;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
+  touch-action: pan-x;
 }
 
 .photo-row__track::-webkit-scrollbar {
   display: none;
 }
 
-/* Natural-width frames — ~2–3 visible depending on aspect */
+/* Exactly 3 photos visible; each snap step = one photo */
 .photo-row__cell {
-  flex: 0 0 auto;
-  width: auto;
+  flex: 0 0
+    calc(
+      (100% - (var(--photos-visible, 3) - 1) * var(--photo-gap)) /
+        var(--photos-visible, 3)
+    );
+  min-width: 0;
   scroll-snap-align: start;
   scroll-snap-stop: always;
   transition: transform 0.35s var(--ease);
 }
 
 .photo-row__cell--stagger-0 {
-  transform: translateY(0.35rem);
+  transform: translateY(0.25rem);
 }
 
 .photo-row__cell--stagger-1 {
-  transform: translateY(-0.85rem);
+  transform: translateY(-0.65rem);
 }
 
 .photo-row__cell--stagger-2 {
-  transform: translateY(1rem);
+  transform: translateY(0.85rem);
 }
 
 .photo-row__figure {
   margin: 0;
   display: grid;
-  gap: 0.45rem;
-  width: auto;
+  gap: 0.4rem;
+  width: 100%;
   justify-items: start;
   animation: fade-up 0.65s var(--ease) both;
 }
@@ -151,7 +160,7 @@
 
 .photo-row__number {
   font-family: var(--font-display);
-  font-size: clamp(1.35rem, 2.4vw, 1.85rem);
+  font-size: clamp(1.25rem, 2.2vw, 1.7rem);
   font-weight: 600;
   letter-spacing: -0.02em;
   line-height: 1;
@@ -161,40 +170,34 @@
 
 .photo-row__frame.photo-grid__item,
 .photo-row__frame {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin: 0;
   padding: 0;
-  width: auto;
-  height: auto;
-  overflow: visible;
+  width: 100%;
+  height: var(--photo-row-h);
+  overflow: hidden;
   background: transparent;
   break-inside: auto;
   animation: none;
 }
 
-/* Full photo, natural aspect — never crop or stretch */
+/* Full photo inside the slot — no crop stretch */
 .photo-row__frame.photo-grid__item img,
-.photo-row__frame img {
+.photo-row__frame img,
+.photo-row__figure--landscape .photo-row__frame img,
+.photo-row__figure--portrait .photo-row__frame img {
   width: auto;
-  height: var(--photo-row-h);
-  max-width: min(48vw, 26rem);
-  max-height: var(--photo-row-h);
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
   object-fit: contain;
   object-position: center;
   opacity: 0.98;
   transition:
     transform 0.55s var(--ease),
     opacity 0.3s var(--ease);
-}
-
-.photo-row__figure--landscape .photo-row__frame img {
-  height: calc(var(--photo-row-h) * 0.78);
-  max-width: min(52vw, 30rem);
-}
-
-.photo-row__figure--portrait .photo-row__frame img {
-  height: var(--photo-row-h);
-  max-width: min(32vw, 18rem);
 }
 
 .photo-row__frame:hover img,
@@ -206,7 +209,7 @@
 .photo-row__caption {
   display: grid;
   gap: 0.15rem;
-  max-width: 14rem;
+  max-width: 100%;
   padding-inline: 0.05rem;
 }
 
@@ -252,14 +255,6 @@
   background: var(--text);
   color: var(--bg);
   transform: scale(1.05);
-}
-
-.photo-rows__controls .photo-row__nav--prev {
-  margin-left: -0.15rem;
-}
-
-.photo-rows__controls .photo-row__nav--next {
-  margin-right: -0.15rem;
 }
 
 /* —— Compact masonry (course / dense) —— */
@@ -417,10 +412,10 @@
 @media (max-width: 900px) {
   :root {
     --photo-row-h: clamp(12rem, 34vw, 16rem);
-    --photo-gap: clamp(1rem, 3vw, 1.75rem);
+    --photos-visible: 2;
   }
 
-  .photo-rows {
+  .photo-row {
     padding-inline: 2.1rem;
   }
 }
@@ -428,6 +423,7 @@
 @media (max-width: 700px) {
   :root {
     --photo-row-h: clamp(11.5rem, 46vw, 14.5rem);
+    --photos-visible: 1.25;
   }
 
   .photo-grid {
@@ -440,6 +436,9 @@
 
   .photo-rows {
     gap: 1.75rem;
+  }
+
+  .photo-row {
     padding-inline: 1.75rem;
   }
 
@@ -447,12 +446,6 @@
   .photo-row__cell--stagger-1,
   .photo-row__cell--stagger-2 {
     transform: none;
-  }
-
-  .photo-row__figure--landscape .photo-row__frame img,
-  .photo-row__figure--portrait .photo-row__frame img,
-  .photo-row__frame img {
-    max-width: min(72vw, 20rem);
   }
 
   .photo-row__nav {

@@ -53,11 +53,10 @@ export function Home() {
           open any frame.
         </p>
         <PhotoGrid
-          limit={9}
+          limit={12}
           showFilters={false}
           layout="rows"
-          rowCount={3}
-          syncScroll
+          syncScroll={false}
           groupBySet={false}
         />
       </section>

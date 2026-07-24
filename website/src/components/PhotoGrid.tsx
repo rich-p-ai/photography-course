@@ -78,7 +78,8 @@ export function PhotoGrid({
 
   const isRows = layout === 'rows'
   const shouldGroup = groupBySet ?? false
-  const synced = syncScroll ?? isRows
+  /** Each row scrolls on its own by default */
+  const synced = syncScroll ?? false
   const numbers = showNumbers ?? isRows
 
   const filtered = useMemo(() => {
@@ -238,7 +239,7 @@ function PhotoRows({
   photos,
   captionMode,
   rowCount: rowCountProp,
-  syncScroll = true,
+  syncScroll = false,
   showNumbers = true,
   indexById,
   onOpen,
@@ -283,7 +284,9 @@ function PhotoRows({
     })
   }
 
-  function scrollTrackByOne(track: HTMLDivElement, direction: -1 | 1) {
+  function scrollRow(rowIndex: number, direction: -1 | 1) {
+    const track = trackRefs.current[rowIndex]
+    if (!track) return
     const cells = Array.from(
       track.querySelectorAll<HTMLElement>('.photo-row__cell'),
     )
@@ -292,59 +295,48 @@ function PhotoRows({
     const positions = cells.map((cell) => cell.offsetLeft - origin)
     let current = 0
     for (let i = 0; i < positions.length; i++) {
-      if (positions[i]! <= track.scrollLeft + 12) current = i
+      if (positions[i]! <= track.scrollLeft + cells[i]!.clientWidth * 0.35) {
+        current = i
+      }
     }
     const next = Math.min(cells.length - 1, Math.max(0, current + direction))
     track.scrollTo({ left: positions[next]!, behavior: 'smooth' })
   }
 
-  function scrollGroup(direction: -1 | 1) {
-    if (syncScroll) {
-      syncing.current = true
-      trackRefs.current.forEach((track) => {
-        if (track) scrollTrackByOne(track, direction)
-      })
-      requestAnimationFrame(() => {
-        syncing.current = false
-      })
-      return
-    }
-    const track = trackRefs.current[0]
-    if (track) scrollTrackByOne(track, direction)
-  }
-
   if (photos.length === 0) return null
-
-  const canScroll = photos.length > rowCount
 
   return (
     <div
-      className={`photo-rows ${syncScroll ? 'photo-rows--synced' : ''}`}
-      style={{ '--row-count': rowCount } as CSSProperties}
+      className={`photo-rows ${syncScroll ? 'photo-rows--synced' : 'photo-rows--independent'}`}
+      style={
+        {
+          '--row-count': rowCount,
+          '--photos-visible': 3,
+        } as CSSProperties
+      }
     >
-      {canScroll && (
-        <div className="photo-rows__controls">
-          <button
-            type="button"
-            className="photo-row__nav photo-row__nav--prev"
-            aria-label="Previous photos"
-            onClick={() => scrollGroup(-1)}
-          >
-            ‹
-          </button>
-          <button
-            type="button"
-            className="photo-row__nav photo-row__nav--next"
-            aria-label="Next photos"
-            onClick={() => scrollGroup(1)}
-          >
-            ›
-          </button>
-        </div>
-      )}
-
       {rows.map((row, rowIndex) => (
         <div key={rowIndex} className="photo-row">
+          {row.length > 3 && (
+            <div className="photo-row__controls">
+              <button
+                type="button"
+                className="photo-row__nav photo-row__nav--prev"
+                aria-label={`Previous photos in row ${rowIndex + 1}`}
+                onClick={() => scrollRow(rowIndex, -1)}
+              >
+                ‹
+              </button>
+              <button
+                type="button"
+                className="photo-row__nav photo-row__nav--next"
+                aria-label={`Next photos in row ${rowIndex + 1}`}
+                onClick={() => scrollRow(rowIndex, 1)}
+              >
+                ›
+              </button>
+            </div>
+          )}
           <div
             className="photo-row__track"
             ref={(el) => {
@@ -511,8 +503,9 @@ function PhotoCard({
 }
 
 function autoRowCount(count: number): number {
-  if (count <= 4) return 1
-  if (count <= 12) return 2
+  // Keep 5+ photos per row when possible; never more than 3 rows
+  if (count < 10) return 1
+  if (count < 15) return 2
   return MAX_ROWS
 }
 
