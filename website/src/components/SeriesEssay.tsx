@@ -58,7 +58,10 @@ export function SeriesEssay({ series, frames }: SeriesEssayProps) {
         <PhotoRows
           photos={photos}
           captionMode="quiet"
-          syncScroll={frames.length > 6}
+          rowCount={3}
+          syncScroll
+          showNumbers={false}
+          indexById={indexById}
           onOpen={(photoId) => {
             const index = indexById.get(photoId)
             if (typeof index === 'number') setActiveIndex(index)

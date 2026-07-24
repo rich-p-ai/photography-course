@@ -52,7 +52,14 @@ export function Home() {
           A quiet sample of recent light — scroll sideways through the rows, or
           open any frame.
         </p>
-        <PhotoGrid limit={9} showFilters={false} layout="rows" rowCount={3} />
+        <PhotoGrid
+          limit={9}
+          showFilters={false}
+          layout="rows"
+          rowCount={3}
+          syncScroll
+          groupBySet={false}
+        />
       </section>
     </>
   )

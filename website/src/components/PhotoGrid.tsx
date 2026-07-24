@@ -24,7 +24,7 @@ type PhotoGridProps = {
   limit?: number
   showFilters?: boolean
   day?: number
-  /** Group frames under set headings. Default: on when not limited. */
+  /** Group frames under set headings. Default off for row carousels. */
   groupBySet?: boolean
   /** quiet = under-image captions; overlay = hover captions on frames */
   captionMode?: 'quiet' | 'overlay' | 'below'
@@ -33,11 +33,15 @@ type PhotoGridProps = {
    * masonry = compact multi-column (course day / dense lists)
    */
   layout?: 'rows' | 'masonry'
-  /** Number of horizontal rows. Auto: 1–3 based on photo count. */
+  /** Number of horizontal rows (max 3). Auto: 1–3 based on photo count. */
   rowCount?: number
-  /** Sync horizontal scroll across rows. */
+  /** Sync horizontal scroll across rows so the group moves together. */
   syncScroll?: boolean
+  /** Show editorial frame numbers (01, 02…). Default on for rows. */
+  showNumbers?: boolean
 }
+
+const MAX_ROWS = 3
 
 export function PhotoGrid({
   photos: photosProp,
@@ -48,7 +52,8 @@ export function PhotoGrid({
   captionMode = 'quiet',
   layout: layoutProp,
   rowCount: rowCountProp,
-  syncScroll = false,
+  syncScroll,
+  showNumbers,
 }: PhotoGridProps) {
   const [searchParams, setSearchParams] = useSearchParams()
   const tabParam = searchParams.get('tab')
@@ -67,12 +72,14 @@ export function PhotoGrid({
     }
   }, [tabParam, showFilters])
 
-  const shouldGroup =
-    groupBySet ?? (typeof limit !== 'number' && captionMode !== 'below')
-
   const layout =
     layoutProp ??
     (captionMode === 'below' || typeof day === 'number' ? 'masonry' : 'rows')
+
+  const isRows = layout === 'rows'
+  const shouldGroup = groupBySet ?? false
+  const synced = syncScroll ?? isRows
+  const numbers = showNumbers ?? isRows
 
   const filtered = useMemo(() => {
     const base =
@@ -85,8 +92,11 @@ export function PhotoGrid({
   }, [day, filter, limit, photosProp])
 
   const sets = useMemo(
-    () => (shouldGroup && filter !== 'Series' && layout === 'rows' ? groupPhotosBySet(filtered) : null),
-    [filtered, shouldGroup, filter, layout],
+    () =>
+      shouldGroup && filter !== 'Series' && isRows
+        ? groupPhotosBySet(filtered)
+        : null,
+    [filtered, shouldGroup, filter, isRows],
   )
 
   function selectTab(tab: PortfolioTab) {
@@ -100,8 +110,12 @@ export function PhotoGrid({
     }
   }
 
-  const caption = captionMode === 'below' ? 'below' : captionMode === 'overlay' ? 'overlay' : 'quiet'
-  const isRows = layout === 'rows'
+  const caption =
+    captionMode === 'below'
+      ? 'below'
+      : captionMode === 'overlay'
+        ? 'overlay'
+        : 'quiet'
 
   const indexById = useMemo(() => {
     const map = new Map<string, number>()
@@ -168,7 +182,9 @@ export function PhotoGrid({
                   photos={group.photos}
                   captionMode={caption}
                   rowCount={rowCountProp}
-                  syncScroll={syncScroll}
+                  syncScroll={synced}
+                  showNumbers={numbers}
+                  indexById={indexById}
                   onOpen={openPhoto}
                 />
               </section>
@@ -180,7 +196,9 @@ export function PhotoGrid({
           photos={filtered}
           captionMode={caption}
           rowCount={rowCountProp}
-          syncScroll={syncScroll}
+          syncScroll={synced}
+          showNumbers={numbers}
+          indexById={indexById}
           onOpen={openPhoto}
         />
       ) : (
@@ -220,7 +238,9 @@ function PhotoRows({
   photos,
   captionMode,
   rowCount: rowCountProp,
-  syncScroll = false,
+  syncScroll = true,
+  showNumbers = true,
+  indexById,
   onOpen,
   captionFor,
 }: {
@@ -228,11 +248,19 @@ function PhotoRows({
   captionMode: CaptionMode
   rowCount?: number
   syncScroll?: boolean
+  showNumbers?: boolean
+  indexById?: Map<string, number>
   onOpen: (photoId: string) => void
   captionFor?: (photo: Photo) => PhotoRowCaption
 }) {
-  const rowCount = rowCountProp ?? autoRowCount(photos.length)
-  const rows = useMemo(() => distributeIntoRows(photos, rowCount), [photos, rowCount])
+  const rowCount = Math.min(
+    MAX_ROWS,
+    Math.max(1, rowCountProp ?? autoRowCount(photos.length)),
+  )
+  const rows = useMemo(
+    () => distributeIntoRows(photos, rowCount),
+    [photos, rowCount],
+  )
   const trackRefs = useRef<(HTMLDivElement | null)[]>([])
   const syncing = useRef(false)
 
@@ -255,14 +283,11 @@ function PhotoRows({
     })
   }
 
-  function scrollRow(rowIndex: number, direction: -1 | 1) {
-    const track = trackRefs.current[rowIndex]
-    if (!track) return
+  function scrollTrackByOne(track: HTMLDivElement, direction: -1 | 1) {
     const cells = Array.from(
       track.querySelectorAll<HTMLElement>('.photo-row__cell'),
     )
     if (cells.length === 0) return
-
     const origin = cells[0]!.offsetLeft
     const positions = cells.map((cell) => cell.offsetLeft - origin)
     let current = 0
@@ -273,35 +298,53 @@ function PhotoRows({
     track.scrollTo({ left: positions[next]!, behavior: 'smooth' })
   }
 
+  function scrollGroup(direction: -1 | 1) {
+    if (syncScroll) {
+      syncing.current = true
+      trackRefs.current.forEach((track) => {
+        if (track) scrollTrackByOne(track, direction)
+      })
+      requestAnimationFrame(() => {
+        syncing.current = false
+      })
+      return
+    }
+    const track = trackRefs.current[0]
+    if (track) scrollTrackByOne(track, direction)
+  }
+
   if (photos.length === 0) return null
+
+  const canScroll = photos.length > rowCount
 
   return (
     <div
       className={`photo-rows ${syncScroll ? 'photo-rows--synced' : ''}`}
       style={{ '--row-count': rowCount } as CSSProperties}
     >
+      {canScroll && (
+        <div className="photo-rows__controls">
+          <button
+            type="button"
+            className="photo-row__nav photo-row__nav--prev"
+            aria-label="Previous photos"
+            onClick={() => scrollGroup(-1)}
+          >
+            ‹
+          </button>
+          <button
+            type="button"
+            className="photo-row__nav photo-row__nav--next"
+            aria-label="Next photos"
+            onClick={() => scrollGroup(1)}
+          >
+            ›
+          </button>
+        </div>
+      )}
+
       {rows.map((row, rowIndex) => (
         <div key={rowIndex} className="photo-row">
-          <div className="photo-row__controls" aria-hidden={row.length < 2}>
-            <button
-              type="button"
-              className="photo-row__nav photo-row__nav--prev"
-              aria-label={`Scroll row ${rowIndex + 1} left`}
-              onClick={() => scrollRow(rowIndex, -1)}
-              tabIndex={row.length < 2 ? -1 : 0}
-            >
-              ‹
-            </button>
-            <button
-              type="button"
-              className="photo-row__nav photo-row__nav--next"
-              aria-label={`Scroll row ${rowIndex + 1} right`}
-              onClick={() => scrollRow(rowIndex, 1)}
-              tabIndex={row.length < 2 ? -1 : 0}
-            >
-              ›
-            </button>
-          </div>
           <div
             className="photo-row__track"
             ref={(el) => {
@@ -311,18 +354,27 @@ function PhotoRows({
             role="list"
             aria-label={`Photo row ${rowIndex + 1} of ${rowCount}`}
           >
-            {row.map((photo, cellIndex) => (
-              <div key={photo.id} className="photo-row__cell" role="listitem">
-                <PhotoCard
-                  photo={photo}
-                  order={rowIndex * 8 + cellIndex}
-                  captionMode={captionMode}
-                  variant="row"
-                  captionOverride={captionFor?.(photo)}
-                  onOpen={onOpen}
-                />
-              </div>
-            ))}
+            {row.map((photo, cellIndex) => {
+              const globalIndex = indexById?.get(photo.id) ?? cellIndex
+              const frameNumber = globalIndex + 1
+              return (
+                <div
+                  key={photo.id}
+                  className={`photo-row__cell photo-row__cell--stagger-${(cellIndex + rowIndex) % 3}`}
+                  role="listitem"
+                >
+                  <PhotoCard
+                    photo={photo}
+                    order={rowIndex * 8 + cellIndex}
+                    frameNumber={showNumbers ? frameNumber : undefined}
+                    captionMode={captionMode}
+                    variant="row"
+                    captionOverride={captionFor?.(photo)}
+                    onOpen={onOpen}
+                  />
+                </div>
+              )
+            })}
           </div>
         </div>
       ))}
@@ -333,6 +385,7 @@ function PhotoRows({
 function PhotoCard({
   photo,
   order = 0,
+  frameNumber,
   captionMode,
   variant = 'masonry',
   captionOverride,
@@ -340,6 +393,7 @@ function PhotoCard({
 }: {
   photo: Photo
   order?: number
+  frameNumber?: number
   captionMode: CaptionMode
   variant?: 'row' | 'masonry'
   captionOverride?: PhotoRowCaption
@@ -374,11 +428,21 @@ function PhotoCard({
 
   if (variant === 'row') {
     const orientation = photo.width >= photo.height ? 'landscape' : 'portrait'
+    const numberPlacement =
+      frameNumber != null && frameNumber % 2 === 0 ? 'below' : 'above'
+
     return (
       <figure
-        className={`photo-row__figure photo-row__figure--${orientation}`}
+        className={`photo-row__figure photo-row__figure--${orientation} ${
+          frameNumber != null ? `photo-row__figure--num-${numberPlacement}` : ''
+        }`}
         style={{ animationDelay: `${Math.min(order, 16) * 40}ms` }}
       >
+        {frameNumber != null && numberPlacement === 'above' && (
+          <span className="photo-row__number" aria-hidden="true">
+            {String(frameNumber).padStart(2, '0')}
+          </span>
+        )}
         <button
           type="button"
           className={`photo-grid__item photo-row__frame ${captionMode === 'quiet' ? 'photo-row__frame--quiet' : ''}`}
@@ -401,7 +465,12 @@ function PhotoCard({
             </span>
           )}
         </button>
-        {captionMode === 'quiet' && (
+        {frameNumber != null && numberPlacement === 'below' && (
+          <span className="photo-row__number" aria-hidden="true">
+            {String(frameNumber).padStart(2, '0')}
+          </span>
+        )}
+        {captionMode === 'quiet' && !frameNumber && (
           <figcaption className="photo-row__caption">
             <span className="photo-row__caption-title">
               {captionOverride?.title ?? photo.title}
@@ -442,14 +511,16 @@ function PhotoCard({
 }
 
 function autoRowCount(count: number): number {
-  // Prefer fewer rows so each carousel can show 2–3 frames side by side
-  if (count <= 5) return 1
-  if (count <= 10) return 2
-  return 3
+  if (count <= 4) return 1
+  if (count <= 12) return 2
+  return MAX_ROWS
 }
 
 function distributeIntoRows(photos: Photo[], rowCount: number): Photo[][] {
-  const rows: Photo[][] = Array.from({ length: Math.max(1, rowCount) }, () => [])
+  const rows: Photo[][] = Array.from(
+    { length: Math.min(MAX_ROWS, Math.max(1, rowCount)) },
+    () => [],
+  )
   photos.forEach((photo, i) => {
     rows[i % rows.length]!.push(photo)
   })
