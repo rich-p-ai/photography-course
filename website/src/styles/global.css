@@ -27,8 +27,9 @@
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --page-pad: clamp(1.35rem, 4.5vw, 4rem);
   --space-section: clamp(3.5rem, 8vw, 6rem);
-  --photo-row-h: clamp(11.5rem, 22vw, 16.5rem);
-  --photo-gap: clamp(0.85rem, 1.8vw, 1.35rem);
+  --photo-row-h: clamp(14rem, 28vw, 20rem);
+  --photo-gap: clamp(0.75rem, 1.5vw, 1.15rem);
+  --photos-visible: 2.75;
 }
 
 [data-theme='dark'] {

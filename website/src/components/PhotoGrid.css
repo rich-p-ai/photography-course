@@ -78,11 +78,12 @@
 
 .photo-rows {
   display: grid;
-  gap: clamp(1.35rem, 3vw, 2rem);
+  gap: clamp(1.5rem, 3.5vw, 2.25rem);
 }
 
 .photo-row {
   position: relative;
+  padding-inline: 2.5rem;
 }
 
 .photo-row__track {
@@ -90,20 +91,12 @@
   gap: var(--photo-gap);
   overflow-x: auto;
   overflow-y: hidden;
-  scroll-snap-type: x proximity;
+  scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
-  padding: 0.15rem var(--page-pad) 0.35rem;
-  margin-inline: calc(var(--page-pad) * -1);
+  padding: 0.2rem 0 0.55rem;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
   scrollbar-color: color-mix(in srgb, var(--accent) 35%, transparent) transparent;
-  mask-image: linear-gradient(
-    90deg,
-    transparent 0%,
-    #000 1.5rem,
-    #000 calc(100% - 1.5rem),
-    transparent 100%
-  );
 }
 
 .photo-row__track::-webkit-scrollbar {
@@ -115,59 +108,66 @@
   border-radius: 999px;
 }
 
+/* Show ~2–3 full frames at a time */
 .photo-row__cell {
-  flex: 0 0 auto;
+  flex: 0 0
+    calc(
+      (100% - (var(--photos-visible) - 1) * var(--photo-gap)) /
+        var(--photos-visible)
+    );
+  min-width: 0;
   scroll-snap-align: start;
+  scroll-snap-stop: always;
 }
 
 .photo-row__figure {
   margin: 0;
   display: grid;
   gap: 0.55rem;
-  width: auto;
+  width: 100%;
   animation: fade-up 0.65s var(--ease) both;
 }
 
+.photo-row__frame.photo-grid__item,
 .photo-row__frame {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin: 0;
   padding: 0;
+  width: 100%;
   height: var(--photo-row-h);
-  width: auto;
   overflow: hidden;
-  background: color-mix(in srgb, var(--accent-soft) 55%, transparent);
+  background: color-mix(in srgb, var(--accent-soft) 28%, transparent);
+  break-inside: auto;
+  animation: none;
 }
 
+/* Full photo visible — never crop or stretch to fill */
+.photo-row__frame.photo-grid__item img,
 .photo-row__frame img {
   width: auto;
-  height: 100%;
-  max-width: none;
-  object-fit: cover;
-  opacity: 0.97;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: center;
+  opacity: 0.98;
   transition:
-    transform 0.7s var(--ease),
-    opacity 0.35s var(--ease);
-}
-
-.photo-row__figure--portrait .photo-row__frame {
-  /* Keep portraits from dominating the row width */
-  max-width: calc(var(--photo-row-h) * 0.78);
-}
-
-.photo-row__figure--portrait .photo-row__frame img {
-  width: 100%;
-  object-fit: cover;
+    transform 0.55s var(--ease),
+    opacity 0.3s var(--ease);
 }
 
 .photo-row__frame:hover img,
 .photo-row__frame:focus-visible img {
-  transform: scale(1.03);
+  transform: scale(1.02);
   opacity: 1;
 }
 
 .photo-row__caption {
   display: grid;
   gap: 0.15rem;
-  max-width: 16rem;
+  max-width: 100%;
   padding-inline: 0.05rem;
 }
 
@@ -190,20 +190,14 @@
 .photo-row__controls {
   pointer-events: none;
   position: absolute;
-  inset: 0 0 auto;
+  inset: 0;
   z-index: 2;
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: var(--photo-row-h);
-  padding-inline: 0.15rem;
-  opacity: 0;
-  transition: opacity 0.25s var(--ease);
-}
-
-.photo-row:hover .photo-row__controls,
-.photo-row:focus-within .photo-row__controls {
-  opacity: 1;
+  margin-top: 0.2rem;
+  padding-inline: 0;
 }
 
 .photo-row__controls[aria-hidden='true'] {
@@ -212,19 +206,19 @@
 
 .photo-row__nav {
   pointer-events: auto;
-  width: 2.25rem;
-  height: 2.25rem;
+  width: 2.35rem;
+  height: 2.35rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border-radius: 999px;
-  background: color-mix(in srgb, var(--bg-elevated) 88%, transparent);
+  background: color-mix(in srgb, var(--bg-elevated) 92%, transparent);
   border: 1px solid var(--border);
   color: var(--text);
-  font-size: 1.35rem;
+  font-size: 1.4rem;
   line-height: 1;
   backdrop-filter: blur(8px);
-  box-shadow: 0 8px 20px rgba(12, 22, 30, 0.08);
+  box-shadow: 0 8px 20px rgba(12, 22, 30, 0.1);
   transition:
     background 0.2s var(--ease),
     color 0.2s var(--ease),
@@ -235,7 +229,25 @@
 .photo-row__nav:focus-visible {
   background: var(--text);
   color: var(--bg);
-  transform: scale(1.04);
+  transform: scale(1.05);
+}
+
+.photo-row__nav--prev {
+  transform: translateX(-0.15rem);
+}
+
+.photo-row__nav--next {
+  transform: translateX(0.15rem);
+}
+
+.photo-row__nav--prev:hover,
+.photo-row__nav--prev:focus-visible {
+  transform: translateX(-0.15rem) scale(1.05);
+}
+
+.photo-row__nav--next:hover,
+.photo-row__nav--next:focus-visible {
+  transform: translateX(0.15rem) scale(1.05);
 }
 
 /* —— Compact masonry (course / dense) —— */
@@ -256,12 +268,6 @@
   animation: fade-up 0.6s var(--ease) both;
 }
 
-.photo-row__frame.photo-grid__item {
-  break-inside: auto;
-  margin: 0;
-  animation: none;
-}
-
 .photo-grid__item img {
   width: 100%;
   height: auto;
@@ -275,6 +281,12 @@
 .photo-grid__item:focus-visible img {
   transform: scale(1.025);
   opacity: 1;
+}
+
+/* Keep row frames from inheriting masonry stretch rules */
+.photo-row__frame.photo-grid__item:hover img,
+.photo-row__frame.photo-grid__item:focus-visible img {
+  transform: scale(1.02);
 }
 
 .photo-grid__caption {
@@ -368,11 +380,21 @@
 
 @media (max-width: 900px) {
   :root {
-    --photo-row-h: clamp(10rem, 34vw, 13.5rem);
+    --photo-row-h: clamp(12rem, 36vw, 16rem);
+    --photos-visible: 2.15;
+  }
+
+  .photo-row {
+    padding-inline: 2.1rem;
   }
 }
 
 @media (max-width: 700px) {
+  :root {
+    --photos-visible: 1.35;
+    --photo-row-h: clamp(12.5rem, 48vw, 15rem);
+  }
+
   .photo-grid {
     columns: 2 140px;
   }
@@ -385,13 +407,14 @@
     gap: 1.5rem;
   }
 
-  .photo-row__track {
-    mask-image: none;
-    padding-bottom: 0.5rem;
+  .photo-row {
+    padding-inline: 1.85rem;
   }
 
-  .photo-row__controls {
-    display: none;
+  .photo-row__nav {
+    width: 2.1rem;
+    height: 2.1rem;
+    font-size: 1.25rem;
   }
 
   .photo-row__caption-title {
@@ -406,15 +429,5 @@
     opacity: 1;
     transform: none;
     padding-top: 2rem;
-  }
-}
-
-@media (max-width: 520px) {
-  :root {
-    --photo-row-h: clamp(9.5rem, 42vw, 12rem);
-  }
-
-  .photo-row__caption {
-    max-width: 12rem;
   }
 }

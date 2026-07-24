@@ -258,8 +258,19 @@ function PhotoRows({
   function scrollRow(rowIndex: number, direction: -1 | 1) {
     const track = trackRefs.current[rowIndex]
     if (!track) return
-    const delta = Math.round(track.clientWidth * 0.72) * direction
-    track.scrollBy({ left: delta, behavior: 'smooth' })
+    const cells = Array.from(
+      track.querySelectorAll<HTMLElement>('.photo-row__cell'),
+    )
+    if (cells.length === 0) return
+
+    const origin = cells[0]!.offsetLeft
+    const positions = cells.map((cell) => cell.offsetLeft - origin)
+    let current = 0
+    for (let i = 0; i < positions.length; i++) {
+      if (positions[i]! <= track.scrollLeft + 12) current = i
+    }
+    const next = Math.min(cells.length - 1, Math.max(0, current + direction))
+    track.scrollTo({ left: positions[next]!, behavior: 'smooth' })
   }
 
   if (photos.length === 0) return null
@@ -431,8 +442,9 @@ function PhotoCard({
 }
 
 function autoRowCount(count: number): number {
-  if (count <= 3) return 1
-  if (count <= 8) return 2
+  // Prefer fewer rows so each carousel can show 2–3 frames side by side
+  if (count <= 5) return 1
+  if (count <= 10) return 2
   return 3
 }
 
