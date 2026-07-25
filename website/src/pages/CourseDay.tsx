@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { Link, Navigate, useLocation, useParams } from 'react-router-dom'
+import { AiReview } from '../components/AiReview'
 import { Checklist } from '../components/Checklist'
 import { PhotoGrid } from '../components/PhotoGrid'
 import { StudyMaterialItem } from '../components/StudyMaterialItem'
@@ -10,6 +11,7 @@ import {
   getCourseDay,
 } from '../data/course'
 import { photosForDay } from '../data/photos'
+import { reviewForDay } from '../data/reviews'
 import './CourseDay.css'
 
 export function CourseDay() {
@@ -34,6 +36,7 @@ export function CourseDay() {
   const prev = index > 0 ? courseDays[index - 1] : null
   const next = index < courseDays.length - 1 ? courseDays[index + 1] : null
   const dayPhotos = photosForDay(day.day)
+  const dayReview = reviewForDay(day.day)
 
   return (
     <section className="page course-day">
@@ -164,6 +167,8 @@ export function CourseDay() {
           <PhotoGrid day={day.day} showFilters={false} layout="rows" />
         </section>
       )}
+
+      {dayReview && <AiReview review={dayReview} />}
 
       <p className="course-day__jump">
         <a href="#upload-for-review">Jump to upload for review ↓</a>
