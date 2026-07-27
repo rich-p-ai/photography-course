@@ -3,10 +3,16 @@ export type PhotoCategory = 'Street' | 'Landscape' | 'Portraits'
 /** Portfolio filter tabs — Series opens the series card index */
 export type PortfolioTab = PhotoCategory | 'All' | 'Series'
 
-/** Respect Vite base path (custom domain serves from /) */
+/**
+ * Bump when replacing photo files in place so browsers/CDN skip stale caches.
+ * Respect Vite base path (custom domain serves from /).
+ */
+const PHOTO_CACHE_VERSION = '20260727b'
+
 export function photoSrc(file: string): string {
   const base = import.meta.env.BASE_URL
-  return `${base}photos/${file.replace(/^\/?photos\//, '')}`
+  const path = `${base}photos/${file.replace(/^\/?photos\//, '')}`
+  return `${path}?v=${PHOTO_CACHE_VERSION}`
 }
 
 export type Photo = {
@@ -353,7 +359,7 @@ export const photos: Photo[] = [
     category: 'Landscape',
     src: photoSrc('scarlet-harbor.jpg'),
     width: 2000,
-    height: 1125,
+    height: 1124,
   },
   {
     id: 'statue-and-stranger',
