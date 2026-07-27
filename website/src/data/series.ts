@@ -14,9 +14,10 @@ export type Series = {
   coverId: string
   /** 2–4 sentences framing the series */
   opening: string
-  journeyTitle: string
-  journey: string
-  closing: string
+  /** Optional essay sections — omit when no narrative was provided */
+  journeyTitle?: string
+  journey?: string
+  closing?: string
   /** Curated sequence — order is the story */
   frames: SeriesFrame[]
 }
@@ -150,6 +151,63 @@ export const seriesList: Series[] = [
         photoId: 'biskane-305',
         caption:
           'Close on failure — torn pink on yellow. The series lands on what time leaves.',
+      },
+    ],
+  },
+  {
+    slug: 'morning-battery',
+    title: 'Morning Battery',
+    description:
+      'The Battery at the hinge of day. Silhouettes, sodium light, and the first and last color over Charleston Harbor. Eleven frames from one stretch of waterfront where the sky does the heavy lifting and the historic edge of the city becomes pure shape.',
+    coverId: 'through-the-wire',
+    opening:
+      'The Battery at the hinge of day. Silhouettes, sodium light, and the first and last color over Charleston Harbor. Eleven frames from one stretch of waterfront where the sky does the heavy lifting and the historic edge of the city becomes pure shape.',
+    frames: [
+      {
+        photoId: 'through-the-wire',
+        caption:
+          'Chain-link and the Ravenel Bridge. Sunrise reduced to geometry and grit.',
+      },
+      {
+        photoId: 'scarlet-harbor',
+        caption:
+          'Two palms and a bird under a sky that refuses to be quiet.',
+      },
+      {
+        photoId: 'statue-and-stranger',
+        caption: 'The sentinel and a single walker. Scale and silence.',
+      },
+      {
+        photoId: 'the-carrier',
+        caption: 'Iron woman against the burn. Pure silhouette.',
+      },
+      {
+        photoId: 'iron-against-the-burn',
+        caption: 'Cannon, lamp, and the last hard light of the day.',
+      },
+      {
+        photoId: 'black-eyed-dawn',
+        caption: 'A wall of black-eyed Susans holding the orange sky.',
+      },
+      {
+        photoId: 'low-angle-gold',
+        caption: 'Petals and first light. Close and low.',
+      },
+      {
+        photoId: 'violet-under-the-lamps',
+        caption: 'Gomphrena under sodium and blue hour.',
+      },
+      {
+        photoId: 'sodium-and-salt',
+        caption: 'Palm line, path, and the edge of the harbor at the blue hour.',
+      },
+      {
+        photoId: 'the-long-walk-home',
+        caption: 'The Battery promenade after the sky has gone.',
+      },
+      {
+        photoId: 'red-wake',
+        caption: 'Boat light trails and their red reflection. Residual motion.',
       },
     ],
   },

@@ -32,12 +32,14 @@ export function SeriesEssay({ series, frames }: SeriesEssayProps) {
         <p className="series-essay__opening">{series.opening}</p>
       </header>
 
-      <section className="series-essay__journey" aria-labelledby="series-journey">
-        <h2 id="series-journey" className="series-essay__label">
-          {series.journeyTitle}
-        </h2>
-        <p className="series-essay__prose">{series.journey}</p>
-      </section>
+      {series.journey && (
+        <section className="series-essay__journey" aria-labelledby="series-journey">
+          <h2 id="series-journey" className="series-essay__label">
+            {series.journeyTitle ?? 'The journey'}
+          </h2>
+          <p className="series-essay__prose">{series.journey}</p>
+        </section>
+      )}
 
       <ol className="series-essay__sequence">
         {frames.map((frame, index) => (
@@ -67,10 +69,12 @@ export function SeriesEssay({ series, frames }: SeriesEssayProps) {
         ))}
       </ol>
 
-      <footer className="series-essay__closing">
-        <h2 className="series-essay__label">Closing</h2>
-        <p className="series-essay__prose">{series.closing}</p>
-      </footer>
+      {series.closing && (
+        <footer className="series-essay__closing">
+          <h2 className="series-essay__label">Closing</h2>
+          <p className="series-essay__prose">{series.closing}</p>
+        </footer>
+      )}
 
       {activeIndex !== null && (
         <Lightbox
