@@ -23,13 +23,13 @@ npm run build
 npm run preview
 ```
 
-### GitHub Pages
+### GitHub Pages + custom domain
 
 Pushes to `main` deploy via `.github/workflows/deploy-pages.yml`.
 
-Public URL: https://rich-p-ai.github.io/photography-course/
+Public URL: https://rcityphotography.com/
 
-Local preview must use the same base path:
+Domain DNS is managed in Squarespace; `public/CNAME` keeps GitHub Pages bound to `rcityphotography.com`.
 
 ```bash
 npm run build && npm run preview

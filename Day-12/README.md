@@ -55,6 +55,6 @@
 
 ---
 
-*Interactive version of this lesson (with working checklists): https://rich-p-ai.github.io/photography-course/course/day-12*
+*Interactive version of this lesson (with working checklists): https://rcityphotography.com/course/day-12*
 
 <!-- Generated from website/src/data/course.ts — edit there, then run: node --experimental-strip-types website/scripts/generate-readmes.ts -->

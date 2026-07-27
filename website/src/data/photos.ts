@@ -3,7 +3,7 @@ export type PhotoCategory = 'Street' | 'Landscape' | 'Portraits'
 /** Portfolio filter tabs — Series opens the series card index */
 export type PortfolioTab = PhotoCategory | 'All' | 'Series'
 
-/** Respect Vite/GitHub Pages base path (e.g. /photography-course/) */
+/** Respect Vite base path (custom domain serves from /) */
 export function photoSrc(file: string): string {
   const base = import.meta.env.BASE_URL
   return `${base}photos/${file.replace(/^\/?photos\//, '')}`

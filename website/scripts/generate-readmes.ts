@@ -11,7 +11,7 @@ import { fileURLToPath } from 'node:url'
 import { courseDays, dayFolderName, type CourseDay } from '../src/data/course.ts'
 
 const repoRoot = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
-const siteBase = 'https://rich-p-ai.github.io/photography-course'
+const siteBase = 'https://rcityphotography.com'
 
 function section(title: string, lines: string[]): string {
   if (lines.length === 0) return ''
