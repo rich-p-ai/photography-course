@@ -39,7 +39,7 @@ export function Lightbox({ photos, index, onClose, onNavigate }: LightboxProps) 
         <div className="lightbox__meta">
           <div>
             <h2>{photo.title}</h2>
-            <p>{photo.caption}</p>
+            {photo.caption ? <p>{photo.caption}</p> : null}
             <p className="lightbox__detail">
               {photo.location} · {photo.date}
               {photo.day ? ` · Day ${String(photo.day).padStart(2, '0')}` : ''}

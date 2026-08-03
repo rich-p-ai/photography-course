@@ -29,7 +29,15 @@ export function SeriesEssay({ series, frames }: SeriesEssayProps) {
       <header className="series-essay__intro">
         <p className="section-label">Series</p>
         <h1 className="series-essay__title">{series.title}</h1>
-        <p className="series-essay__opening">{series.opening}</p>
+        <div className="series-essay__opening">
+          {series.opening
+            .split(/\n\n+/)
+            .map((paragraph) => paragraph.trim())
+            .filter(Boolean)
+            .map((paragraph, index) => (
+              <p key={index}>{paragraph}</p>
+            ))}
+        </div>
       </header>
 
       {series.journey && (
@@ -63,7 +71,9 @@ export function SeriesEssay({ series, frames }: SeriesEssayProps) {
                 {String(index + 1).padStart(2, '0')}
               </p>
               <h3 className="series-essay__frame-title">{frame.photo.title}</h3>
-              <p className="series-essay__caption">{frame.caption}</p>
+              {frame.caption ? (
+                <p className="series-essay__caption">{frame.caption}</p>
+              ) : null}
             </div>
           </li>
         ))}

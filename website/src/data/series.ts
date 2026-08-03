@@ -211,6 +211,27 @@ export const seriesList: Series[] = [
       },
     ],
   },
+  {
+    slug: 'ravenel-geometry',
+    title: 'Ravenel Geometry',
+    description:
+      'The Arthur Ravenel Jr. Bridge is usually photographed as a postcard. This series refuses that.\n\nShot in a single controlled session on the pedestrian path, the work treats the bridge as a system of lines, scale, and light rather than a landmark. Cables, path edges, tower forms, and repeating posts become the primary subject. People appear only as secondary elements that activate the geometry or confirm its scale.\n\nHalf the frames stay in color under the flat, directional morning light. The other half move into black and white to isolate pure structure, shadow, and the hard graphic quality of the steel and concrete.',
+    coverId: 'night-span',
+    opening:
+      'The Arthur Ravenel Jr. Bridge is usually photographed as a postcard. This series refuses that.\n\nShot in a single controlled session on the pedestrian path, the work treats the bridge as a system of lines, scale, and light rather than a landmark. Cables, path edges, tower forms, and repeating posts become the primary subject. People appear only as secondary elements that activate the geometry or confirm its scale.\n\nHalf the frames stay in color under the flat, directional morning light. The other half move into black and white to isolate pure structure, shadow, and the hard graphic quality of the steel and concrete.',
+    frames: [
+      { photoId: 'night-span', caption: '' },
+      { photoId: 'path-lines', caption: '' },
+      { photoId: 'lamp-shadow', caption: '' },
+      { photoId: 'bridge-asleep', caption: '' },
+      { photoId: 'tower-throat', caption: '' },
+      { photoId: 'bridge-curve-runner', caption: '' },
+      { photoId: 'pair-on-the-path', caption: '' },
+      { photoId: 'headphones', caption: '' },
+      { photoId: 'hard-lines', caption: '' },
+      { photoId: 'cable-fan', caption: '' },
+    ],
+  },
 ]
 
 export function getSeries(slug: string): Series | undefined {
