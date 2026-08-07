@@ -1,8 +1,6 @@
 import type { StreetCategory, StreetDay } from './streetTypes'
-import { streetPack0 } from './streetPack0'
-import { streetPack1 } from './streetPack1'
-import { streetPack2 } from './streetPack2'
-import { streetPack3 } from './streetPack3'
+import { streetDaysA } from './streetDaysA'
+import { streetDaysB } from './streetDaysB'
 
 export type { StreetCategory, StreetDay }
 
@@ -28,12 +26,7 @@ export function streetGithubUrl(day: number): string {
   return `${streetRepoUrl}/tree/main/street/${streetDayFolderName(day)}`
 }
 
-export const streetDays: StreetDay[] = [
-  ...streetPack0,
-  ...streetPack1,
-  ...streetPack2,
-  ...streetPack3,
-]
+export const streetDays: StreetDay[] = [...streetDaysA, ...streetDaysB]
 
 export function getStreetDay(slug: string): StreetDay | undefined {
   return streetDays.find((d) => d.slug === slug)
