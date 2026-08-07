@@ -10,7 +10,7 @@ export function Course() {
   return (
     <section className="page course">
       <p className="section-label">14-day challenge</p>
-      <h1 className="page-title">Course</h1>
+      <h1 className="page-title">14-Day Starter</h1>
       <p className="page-lede course__lede">
         Improve skills and discover your style — morning blue-hour shoots in
         Charleston / Isle of Palms, Lightroom edits, then upload for review.
@@ -18,9 +18,9 @@ export function Course() {
       </p>
 
       <p className="course__crosslink">
-        Complements the{' '}
-        <Link to="/street">20-day street exercises</Link> — subject-finding and
-        visual strategies.
+        Part of the{' '}
+        <Link to="/courses">Courses</Link> section. Complements the{' '}
+        <Link to="/street">20-day street exercises</Link>.
       </p>
 
       <dl className="course__meta">

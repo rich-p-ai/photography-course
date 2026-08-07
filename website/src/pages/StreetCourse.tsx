@@ -18,7 +18,7 @@ export function StreetCourse() {
   return (
     <section className="page course street-course">
       <p className="section-label">20-day challenge</p>
-      <h1 className="page-title">Street exercises</h1>
+      <h1 className="page-title">Street Photography</h1>
       <p className="page-lede course__lede">
         Deliberate practice for finding subjects, building visual vocabulary,
         and developing a personal approach to street photography — one constraint
@@ -26,9 +26,9 @@ export function StreetCourse() {
       </p>
 
       <p className="street-course__crosslink">
-        Complements the{' '}
-        <Link to="/course">14-day technical + style course</Link>. Run it
-        after, or interleaved.
+        Part of the{' '}
+        <Link to="/courses">Courses</Link> section. Complements the{' '}
+        <Link to="/course">14-day Starter</Link>.
       </p>
 
       <dl className="course__meta">
