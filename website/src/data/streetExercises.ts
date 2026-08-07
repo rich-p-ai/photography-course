@@ -49,7 +49,7 @@ export function streetGithubUrl(day: number): string {
   return `${streetRepoUrl}/tree/main/street/${streetDayFolderName(day)}`
 }
 
-export const streetDays: StreetDay[] = [...part0, ...part1, ...part2, ...part3]
+export const streetDays = [...part0, ...part1, ...part2, ...part3] as StreetDay[]
 
 export function getStreetDay(slug: string): StreetDay | undefined {
   return streetDays.find((d) => d.slug === slug)
