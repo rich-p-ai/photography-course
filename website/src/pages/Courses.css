@@ -1,0 +1,86 @@
+.courses__lede {
+  margin-bottom: 2.75rem;
+  max-width: 38rem;
+}
+
+.courses__grid {
+  display: grid;
+  gap: 1.75rem;
+}
+
+@media (min-width: 720px) {
+  .courses__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+}
+
+.courses__card {
+  display: grid;
+  gap: 0.85rem;
+  padding: 1.75rem 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  transition: border-color 0.2s var(--ease), background 0.2s var(--ease);
+}
+
+.courses__card:hover {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+}
+
+.courses__tagline {
+  margin: 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.courses__name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.65rem;
+  letter-spacing: -0.03em;
+  font-weight: 500;
+  line-height: 1.15;
+}
+
+.courses__name a {
+  color: inherit;
+  transition: color 0.2s var(--ease);
+}
+
+.courses__name a:hover {
+  color: var(--accent);
+}
+
+.courses__desc {
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+.courses__meta {
+  margin: 0.25rem 0 0;
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+  color: var(--text-muted);
+}
+
+.courses__cta {
+  margin-top: 0.5rem;
+  justify-self: start;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+
+.courses__cta:hover {
+  color: var(--text);
+  border-color: var(--text);
+}

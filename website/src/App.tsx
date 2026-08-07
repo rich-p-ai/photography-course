@@ -5,6 +5,7 @@ import { Footer } from './components/Footer'
 import { Home } from './pages/Home'
 import { Portfolio } from './pages/Portfolio'
 import { SeriesPage } from './pages/SeriesPage'
+import { Courses } from './pages/Courses'
 import { Course } from './pages/Course'
 import { CourseDay } from './pages/CourseDay'
 import { StreetCourse } from './pages/StreetCourse'
@@ -23,6 +24,7 @@ export default function App() {
               <Route path="/" element={<Home />} />
               <Route path="/portfolio" element={<Portfolio />} />
               <Route path="/portfolio/series/:seriesSlug" element={<SeriesPage />} />
+              <Route path="/courses" element={<Courses />} />
               <Route path="/course" element={<Course />} />
               <Route path="/course/:daySlug" element={<CourseDay />} />
               <Route path="/street" element={<StreetCourse />} />
