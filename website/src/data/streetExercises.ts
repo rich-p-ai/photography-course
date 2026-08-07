@@ -1,8 +1,3 @@
-import part0 from './streetDays.part0.json'
-import part1 from './streetDays.part1.json'
-import part2 from './streetDays.part2.json'
-import part3 from './streetDays.part3.json'
-
 export type StreetCategory =
   | 'Busy'
   | 'Quiet'
@@ -54,12 +49,58 @@ export function streetGithubUrl(day: number): string {
   return `${streetRepoUrl}/tree/main/street/${streetDayFolderName(day)}`
 }
 
-export const streetDays: StreetDay[] = [
-  ...part0,
-  ...part1,
-  ...part2,
-  ...part3,
+const defaultReflection = [
+  'What worked and what failed against the constraint?',
+  'Strongest frame and why it succeeds.',
+  'What will you carry into the next session?',
 ]
+
+export const streetDays: StreetDay[] = [
+  {
+    day: 1,
+    slug: 'day-01',
+    title: 'Order',
+    category: 'Busy',
+    coreIdea:
+      'Train your eye to locate structure — patterns, repetition, alignment, rhythm — that already exists inside busy public space.',
+    whyItMatters:
+      'Most street photographs fail because the frame is a collection of unrelated things. The pictures that feel inevitable succeed because the photographer first saw an underlying order and then waited for the human element to lock into it.\nThis day builds the foundational skill of seeing structure before content. Once you can reliably find order, every other exercise becomes sharper.',
+    shootingBrief: [
+      'Busy public space with continuous movement (market, transit hub, main sidewalk, ferry terminal). 45–70 minutes.',
+      'Constraint: order must be the clear subject. Minimum 8 successful frames. Volume target 50–80.',
+      'One primary constraint only — do not mix exercises.',
+    ],
+    technicalFocus: [
+      'Settings: Aperture priority or full manual. f/5.6–8. Shutter 1/250s minimum (prefer 1/320–1/500s). ISO as needed under 3200 when possible.',
+      'Focusing: Zone or single-point. Pre-focus on the pattern plane (usually 3–8m). Hyperfocal at f/8 mid-zoom is useful.',
+      'Stance: Walk slowly. Small lateral shifts change alignments more than zooming. Camera ready at chest or eye level.',
+      'Light: Side or hard directional light reveals structure. Flat overcast flattens patterns.',
+      'Distance: 3–8 meters. Candid only today.',
+    ],
+    failureModes: [
+      'Forcing patterns that are not really there.',
+      'Too many competing elements so order disappears.',
+      'Shooting before the alignment is clean.',
+      'Working too wide with cluttered edges.',
+    ],
+    goodVsExcellent: {
+      good: 'You can point to the pattern and the viewer can see it.',
+      excellent:
+        'The order feels discovered rather than imposed. Removing any single element weakens the picture.',
+    },
+    reflectionPrompts: defaultReflection,
+    sources: [
+      'Matt Stuart Engadget segment on hyperfocal and readiness.',
+      'Nick Turpin masterclass on constructing street frames.',
+      'Garry Winogrand 1982 Los Angeles street footage.',
+    ],
+  },
+]
+
+// Remaining days loaded below to keep file maintainable
+import { streetDaysRest } from './streetDaysRest'
+
+streetDays.push(...streetDaysRest)
 
 export function getStreetDay(slug: string): StreetDay | undefined {
   return streetDays.find((d) => d.slug === slug)
