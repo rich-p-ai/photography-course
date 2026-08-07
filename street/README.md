@@ -1,15 +1,16 @@
 # Street Photography Exercises (20 days)
 
-Consolidated into **photography-course**. Full lessons also render on the site.
+Consolidated into **photography-course**.
 
-**Site:** https://rcityphotography.com/street  
-**Folders:** Day-01 … Day-20 — use for reflections / keepers if you track work in git.
+**Live site:** https://rcityphotography.com/street  
+**Full teaching text index:** [EXPANDED-COURSE.md](./EXPANDED-COURSE.md)  
+**Day folders:** [Day-01](./Day-01) … [Day-20](./Day-20) — full lesson + place for reflections/keepers
 
 ## Categories
-- Busy — 01–04
-- Quiet — 05–08
-- Abstract — 09–13
-- Still — 14–16
-- Subjects — 17–20
+- **Busy** — Days 01–04
+- **Quiet** — Days 05–08
+- **Abstract** — Days 09–13
+- **Still** — Days 14–16
+- **Subjects** — Days 17–20
 
-Lesson text rewritten for intermediate practice (structure inspired by David Gibson).
+Structure inspired by David Gibson, *The Street Photographer’s Manual*. Lesson text fully rewritten for intermediate practice.
