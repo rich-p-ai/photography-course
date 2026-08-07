@@ -2,6 +2,17 @@
   margin-bottom: 2.25rem;
 }
 
+.course__crosslink {
+  margin: -1.25rem 0 2rem;
+  font-size: 0.98rem;
+  color: var(--text-muted);
+}
+
+.course__crosslink a {
+  color: var(--accent);
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
 .course__meta {
   display: grid;
   gap: 1.2rem;

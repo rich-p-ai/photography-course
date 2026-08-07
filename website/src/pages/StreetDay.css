@@ -1,0 +1,13 @@
+.street-day__core-idea {
+  margin: 1rem 0 0;
+  font-size: 1.02rem;
+  line-height: 1.55;
+  color: var(--text);
+  max-width: 40rem;
+}
+
+.course-day__special p {
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.6;
+}

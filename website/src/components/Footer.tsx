@@ -13,6 +13,7 @@ export function Footer() {
         <div className="footer__links">
           <Link to="/portfolio">Portfolio</Link>
           <Link to="/course">Course</Link>
+          <Link to="/street">Street</Link>
           <Link to="/about">About</Link>
           <Link to="/contact">Contact</Link>
           <a

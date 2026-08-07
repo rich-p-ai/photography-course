@@ -7,6 +7,8 @@ import { Portfolio } from './pages/Portfolio'
 import { SeriesPage } from './pages/SeriesPage'
 import { Course } from './pages/Course'
 import { CourseDay } from './pages/CourseDay'
+import { StreetCourse } from './pages/StreetCourse'
+import { StreetDay } from './pages/StreetDay'
 import { About } from './pages/About'
 import { Contact } from './pages/Contact'
 
@@ -23,6 +25,8 @@ export default function App() {
               <Route path="/portfolio/series/:seriesSlug" element={<SeriesPage />} />
               <Route path="/course" element={<Course />} />
               <Route path="/course/:daySlug" element={<CourseDay />} />
+              <Route path="/street" element={<StreetCourse />} />
+              <Route path="/street/:daySlug" element={<StreetDay />} />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
             </Routes>

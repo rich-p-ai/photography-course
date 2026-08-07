@@ -17,6 +17,12 @@ export function Course() {
         Starts {formatCourseDate(1)}.
       </p>
 
+      <p className="course__crosslink">
+        Complements the{' '}
+        <Link to="/street">20-day street exercises</Link> — subject-finding and
+        visual strategies.
+      </p>
+
       <dl className="course__meta">
         <div>
           <dt>Gear</dt>
