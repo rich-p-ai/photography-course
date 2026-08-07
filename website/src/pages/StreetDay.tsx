@@ -23,7 +23,9 @@ export function StreetDay() {
   return (
     <section className="page course-day street-day">
       <nav className="course-day__crumb" aria-label="Breadcrumb">
-        <Link to="/street">Street exercises</Link>
+        <Link to="/courses">Courses</Link>
+        <span aria-hidden="true">/</span>
+        <Link to="/street">Street Photography</Link>
         <span aria-hidden="true">/</span>
         <span>Day {String(day.day).padStart(2, '0')}</span>
       </nav>
@@ -34,7 +36,6 @@ export function StreetDay() {
       <h1 className="page-title">{day.title}</h1>
 
       <p className="street-day__core-idea">{day.coreIdea}</p>
-      {day.goal && <p className="course-day__goal">{day.goal}</p>}
 
       <dl className="course-day__facts">
         <div>
@@ -54,9 +55,20 @@ export function StreetDay() {
         </a>
       </p>
 
+      {day.whyItMatters && (
+        <section className="course-day__block">
+          <h2>Why this exercise matters</h2>
+          {day.whyItMatters.split('\n').filter(Boolean).map((para) => (
+            <p key={para.slice(0, 48)} className="street-day__para">
+              {para}
+            </p>
+          ))}
+        </section>
+      )}
+
       {day.shootingBrief.length > 0 && (
         <section className="course-day__block">
-          <h2>Shooting brief (30–60 min)</h2>
+          <h2>Shooting brief</h2>
           <ol>
             {day.shootingBrief.map((item) => (
               <li key={item}>{item}</li>
@@ -67,7 +79,7 @@ export function StreetDay() {
 
       {day.technicalFocus.length > 0 && (
         <section className="course-day__block">
-          <h2>Technical focus</h2>
+          <h2>Technical & practical</h2>
           <Checklist
             storageKey={`${day.slug}-technical`}
             items={day.technicalFocus}
@@ -75,9 +87,49 @@ export function StreetDay() {
         </section>
       )}
 
+      {day.failureModes.length > 0 && (
+        <section className="course-day__block">
+          <h2>Common failure modes</h2>
+          <ul>
+            {day.failureModes.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {(day.goodVsExcellent.good || day.goodVsExcellent.excellent) && (
+        <section className="course-day__block">
+          <h2>Good vs excellent</h2>
+          <ul>
+            {day.goodVsExcellent.good && (
+              <li>
+                <strong>Good:</strong> {day.goodVsExcellent.good}
+              </li>
+            )}
+            {day.goodVsExcellent.excellent && (
+              <li>
+                <strong>Excellent:</strong> {day.goodVsExcellent.excellent}
+              </li>
+            )}
+          </ul>
+        </section>
+      )}
+
+      {day.sources && day.sources.length > 0 && (
+        <section className="course-day__block">
+          <h2>References</h2>
+          <ul>
+            {day.sources.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </section>
+      )}
+
       {day.reflectionPrompts.length > 0 && (
         <section className="course-day__block">
-          <h2>Reflection prompts (reflection.md)</h2>
+          <h2>Reflection prompts</h2>
           <ul>
             {day.reflectionPrompts.map((item) => (
               <li key={item}>{item}</li>
@@ -107,7 +159,7 @@ export function StreetDay() {
         {next ? (
           <Link
             to={`/street/${next.slug}`}
-            className="course-day__pager-link course-day__pager-link--next"
+            className={`course-day__pager-link course-day__pager-link--next`}
           >
             <span>Next</span>
             <strong>
