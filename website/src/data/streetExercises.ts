@@ -1,4 +1,7 @@
-import daysJson from './streetDays.json'
+import part0 from './streetDays.part0.json'
+import part1 from './streetDays.part1.json'
+import part2 from './streetDays.part2.json'
+import part3 from './streetDays.part3.json'
 
 export type StreetCategory =
   | 'Busy'
@@ -51,7 +54,12 @@ export function streetGithubUrl(day: number): string {
   return `${streetRepoUrl}/tree/main/street/${streetDayFolderName(day)}`
 }
 
-export const streetDays: StreetDay[] = daysJson
+export const streetDays: StreetDay[] = [
+  ...part0,
+  ...part1,
+  ...part2,
+  ...part3,
+]
 
 export function getStreetDay(slug: string): StreetDay | undefined {
   return streetDays.find((d) => d.slug === slug)
